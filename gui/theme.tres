@@ -1,0 +1,27 @@
+[gd_resource type="Theme" format=3 uid="uid://bkpc3uel7qhyc"]
+
+[resource]
+Button/font_sizes/font_size = 16
+OptionButton/colors/font_color = Color(1, 1, 1, 1)
+OptionButton/colors/font_disabled_color = Color(0, 0, 0, 1)
+OptionButton/colors/font_focus_color = Color(0, 0, 0, 1)
+OptionButton/colors/font_hover_color = Color(0, 0, 0, 1)
+OptionButton/colors/font_hover_pressed_color = Color(0, 0, 0, 1)
+OptionButton/colors/font_outline_color = Color(0, 0, 0, 1)
+OptionButton/colors/font_pressed_color = Color(0, 0, 0, 1)
+OptionButton/constants/arrow_margin = 4
+OptionButton/constants/h_separation = 0
+OptionButton/constants/modulate_arrow = 0
+OptionButton/constants/outline_size = 1
+OptionButton/font_sizes/font_size = 16
+OptionButton/fonts/font = null
+OptionButton/icons/arrow = null
+OptionButton/styles/disabled = null
+OptionButton/styles/disabled_mirrored = null
+OptionButton/styles/focus = null
+OptionButton/styles/hover = null
+OptionButton/styles/hover_mirrored = null
+OptionButton/styles/normal = null
+OptionButton/styles/normal_mirrored = null
+OptionButton/styles/pressed = null
+OptionButton/styles/pressed_mirrored = null

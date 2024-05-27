@@ -1,0 +1,80 @@
+[gd_scene load_steps=8 format=3 uid="uid://ckejm4tae70c4"]
+
+[ext_resource type="Texture2D" uid="uid://bo0q72o54n0sp" path="res://art/ww34.jpg" id="1_ic7eo"]
+[ext_resource type="Theme" uid="uid://bkpc3uel7qhyc" path="res://gui/theme.tres" id="1_kdh86"]
+[ext_resource type="Script" path="res://gui/mainMenu/MissionSelector.gd" id="2_0kndn"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_5lngt"]
+
+[sub_resource type="Theme" id="Theme_60d5i"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_embev"]
+
+[sub_resource type="Theme" id="Theme_1tu7t"]
+
+[node name="MainMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -132.0
+offset_bottom = 132.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_ic7eo")
+expand_mode = 5
+stretch_mode = 5
+
+[node name="ColorRect" type="ColorRect" parent="."]
+material = SubResource("CanvasItemMaterial_5lngt")
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -81.0
+offset_top = -154.5
+offset_right = 81.0
+offset_bottom = 154.5
+grow_horizontal = 2
+grow_vertical = 2
+theme = SubResource("Theme_60d5i")
+
+[node name="GridContainer" type="VBoxContainer" parent="."]
+material = SubResource("CanvasItemMaterial_embev")
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -57.0
+offset_top = -73.0
+offset_right = 57.0
+offset_bottom = 73.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = SubResource("Theme_1tu7t")
+theme_override_constants/separation = 5
+
+[node name="MissionSelector" type="OptionButton" parent="GridContainer"]
+layout_mode = 2
+theme = ExtResource("1_kdh86")
+script = ExtResource("2_0kndn")
+
+[node name="PlayButton" type="Button" parent="GridContainer"]
+layout_mode = 2
+text = "PLAY"
+
+[connection signal="button_up" from="GridContainer/PlayButton" to="GridContainer/MissionSelector" method="_on_play_button_button_up"]

@@ -1,0 +1,22 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://cohiquo41yqsm"
+path="res://.godot/imported/unit-soldier-blue.obj-f065823d9f8a3488aa94ddc06937efe9.mesh"
+
+[deps]
+
+files=["res://.godot/imported/unit-soldier-blue.obj-f065823d9f8a3488aa94ddc06937efe9.mesh"]
+
+source_file="res://art/unit-soldier-blue.obj"
+dest_files=["res://.godot/imported/unit-soldier-blue.obj-f065823d9f8a3488aa94ddc06937efe9.mesh", "res://.godot/imported/unit-soldier-blue.obj-f065823d9f8a3488aa94ddc06937efe9.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true
+force_disable_mesh_compression=false

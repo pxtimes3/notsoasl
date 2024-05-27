@@ -1,0 +1,27 @@
+{
+	"name": "Another Basic Mission",
+	"size": [250,250],
+	"datetime": "",
+	"weather": "",
+	"turns": 5,
+	"units": {
+		"player1": {
+			"unit1": {
+				"type": "infantry",
+				"nationality": "us",
+				"size": "8",
+			},
+		},
+		"player2": {
+			
+		},
+	},
+	"objectives": {
+		"player1": {},
+		"player2": {}
+	},
+	"deployment": {
+		"player1": [50,250],
+		"player2": [200,250]
+	}
+}

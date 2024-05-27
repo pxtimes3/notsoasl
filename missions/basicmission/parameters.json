@@ -1,0 +1,35 @@
+{
+	"name": "Basic Mission",
+	"size": [250,250],
+	"datetime": "",
+	"weather": "",
+	"turns": 5,
+	"units": {
+		"player1": {
+			"usarmyriflecompany": {
+				"riflecompany": {
+					"hq": {},
+					"plt": {
+						"pltsq": {
+							"rifleman": {
+								"count": 1,
+								"experience": [2]
+							},
+						},
+					},
+				},
+			},
+		},
+		"player2": {
+			
+		},
+	},
+	"objectives": {
+		"player1": {},
+		"player2": {}
+	},
+	"deployment": {
+		"player1": [50,200],
+		"player2": [50,250]
+	}
+}

@@ -1,0 +1,20 @@
+[gd_scene load_steps=4 format=3 uid="uid://bjleatlgqd114"]
+
+[ext_resource type="Script" path="res://unit/Unit.gd" id="1_h22ej"]
+[ext_resource type="PackedScene" uid="uid://jljry4t7f2v6" path="res://unit/unit_soldier.tscn" id="2_ewc2v"]
+[ext_resource type="PackedScene" uid="uid://duy2qfuadj12s" path="res://unit/UnitMarker.tscn" id="3_tgqyi"]
+
+[node name="Unit" type="Node3D"]
+script = ExtResource("1_h22ej")
+UnitSoldier = ExtResource("2_ewc2v")
+
+[node name="Unitmarker" type="Sprite3D" parent="."]
+transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, 0, 0)
+billboard = 1
+fixed_size = true
+
+[node name="SubViewport" type="SubViewport" parent="Unitmarker"]
+transparent_bg = true
+size = Vector2i(48, 48)
+
+[node name="Control" parent="Unitmarker/SubViewport" instance=ExtResource("3_tgqyi")]

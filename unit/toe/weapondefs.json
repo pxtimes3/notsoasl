@@ -1,0 +1,94 @@
+{
+	"usarmy": 
+		{
+			"m1rifle": {
+				"range": 100,
+				"rangeMax": 300,
+				"rof": 5,
+				"magazine": 8,
+				"ammunition": "30-06"
+			},
+			"m1carbine": {
+				"range": 50,
+				"rangeMax": 200,
+				"rof": 5,
+				"magazine": 20,
+				"ammunition": "30cal"
+			},
+			"m3grease": {
+				"range": 50,
+				"rangeMax": 200,
+				"rof": 20,
+				"magazine": 30,
+				"burst": true,
+				"ammunition": "45cal"
+			},
+			"m1a1thompson": {
+				"range": 50,
+				"rangeMax": 200,
+				"rof": 20,
+				"magazine": 30,
+				"burst": true,
+				"ammunition": "45cal"
+			},
+			"m1903a4": {
+				"range": 200,
+				"rangeMax": 500,
+				"rof": 4,
+				"magazine": 5,
+				"ammunition": "30-06"
+			},
+			"m1918a2": {
+				"range": 100,
+				"rangeMax": 400,
+				"rof": 10,
+				"magazine": 20,
+				"ammunition": "30-06",
+				"burst": true,
+			},
+			"m1grenade": {
+				"range": 15,
+				"rangeMax": 30,
+				"rof": 4,
+				"explosive": true,
+				"radius": 5
+			},
+			"m7": {},
+			"m7gren": {
+				"range": 75,
+				"rangeMax": 150,
+				"explosive": true,
+				"rof": 4,
+				"radius": 5
+			},
+			"m1911a1": {
+				"range": 15,
+				"rangeMax": 50,
+				"magazine": 7,
+				"ammunition": "45cal"
+			},
+			"m1919a4": {
+				"range": 200,
+				"rangeMax": 1400,
+				"rof": 500,
+				"magazine": 250,
+				"ammunition": "30-06",
+				"burst": true,
+			},
+			"m260mm": {
+				"type": "mortar",
+				"dispersion": [4,8],
+				"rangeMin": 200,
+				"rangeMax": 1800,
+				"rof": 20,
+				"magazine": 1,
+				"ammunition": "60mm",
+				"setup": 30,
+			},
+			"60mm": {
+				"type": "ammunition",
+				"explosive": true,
+				"radius": [5,8,12]
+			}
+		}
+}

@@ -1,0 +1,105 @@
+[gd_scene load_steps=7 format=3 uid="uid://ba5hmlo5tdrwy"]
+
+[ext_resource type="FontFile" uid="uid://cb86ktsh83ekv" path="res://art/fonts/Pixellari.ttf" id="1_uyc32"]
+
+[sub_resource type="Theme" id="Theme_388p8"]
+
+[sub_resource type="Theme" id="Theme_dnpda"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_877mm"]
+content_margin_left = 10.0
+content_margin_right = 10.0
+
+[sub_resource type="Theme" id="Theme_rxqto"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_rtipt"]
+
+[node name="GameUi" type="Control"]
+layout_mode = 3
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="ColorRect" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -62.0
+offset_bottom = -2.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = SubResource("Theme_388p8")
+color = Color(0.180005, 0.180005, 0.180005, 1)
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.01
+anchor_top = 0.01
+anchor_right = 0.99
+anchor_bottom = 0.99
+offset_top = -30.0
+offset_bottom = -30.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = SubResource("Theme_dnpda")
+theme_override_styles/panel = SubResource("StyleBoxEmpty_877mm")
+
+[node name="Button" type="Button" parent="Panel"]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -87.0
+offset_top = -15.5
+offset_bottom = 15.5
+grow_horizontal = 0
+grow_vertical = 2
+theme = SubResource("Theme_rxqto")
+theme_override_constants/outline_size = 0
+text = "Start Turn"
+
+[node name="Unit selection" type="Control" parent="Panel"]
+anchors_preset = 0
+offset_left = -10.0
+offset_right = 190.0
+offset_bottom = 43.0
+
+[node name="Headline" type="Label" parent="Panel/Unit selection"]
+clip_contents = true
+custom_minimum_size = Vector2(150, 20)
+layout_mode = 2
+offset_left = 10.0
+offset_right = 200.0
+offset_bottom = 20.0
+size_flags_vertical = 0
+theme_override_font_sizes/font_size = 10
+text = "Selected unit"
+vertical_alignment = 1
+autowrap_mode = 3
+clip_text = true
+text_overrun_behavior = 1
+
+[node name="Body" type="Label" parent="Panel/Unit selection"]
+clip_contents = true
+custom_minimum_size = Vector2(150, 24)
+layout_mode = 2
+offset_left = 10.0
+offset_top = 19.0
+offset_right = 200.0
+offset_bottom = 46.0
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_constants/line_spacing = -1
+theme_override_fonts/font = ExtResource("1_uyc32")
+theme_override_font_sizes/font_size = 10
+theme_override_styles/normal = SubResource("StyleBoxEmpty_rtipt")
+autowrap_mode = 3
+clip_text = true
+text_overrun_behavior = 1
