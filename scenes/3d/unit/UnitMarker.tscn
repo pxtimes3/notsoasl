@@ -1,0 +1,47 @@
+[gd_scene load_steps=4 format=3 uid="uid://duy2qfuadj12s"]
+
+[ext_resource type="Texture2D" uid="uid://bpiy43foqvqvs" path="res://assets/sprites/ui/unit/icon-ak47-48x48.svg" id="1_hn1p6"]
+[ext_resource type="FontFile" uid="uid://cb86ktsh83ekv" path="res://assets/fonts/Pixellari.ttf" id="2_pxvia"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_ntcda"]
+line_spacing = -3.0
+font = ExtResource("2_pxvia")
+font_size = 13
+outline_size = 5
+outline_color = Color(0, 0, 0, 1)
+shadow_size = 8
+shadow_color = Color(0, 0, 0, 0.490196)
+
+[node name="Control" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 49.0
+offset_bottom = 48.0
+
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 0
+offset_right = 48.0
+offset_bottom = 48.0
+texture = ExtResource("1_hn1p6")
+
+[node name="Company" type="Label" parent="."]
+layout_mode = 0
+offset_left = 6.0
+offset_top = 7.0
+offset_right = 26.0
+offset_bottom = 21.0
+text = "MM"
+label_settings = SubResource("LabelSettings_ntcda")
+text_overrun_behavior = 1
+uppercase = true
+
+[node name="Platoon" type="Label" parent="."]
+layout_mode = 0
+offset_left = 6.0
+offset_top = 30.0
+offset_right = 45.0
+offset_bottom = 44.0
+text = "A HQ"
+label_settings = SubResource("LabelSettings_ntcda")
+text_overrun_behavior = 1
+uppercase = true

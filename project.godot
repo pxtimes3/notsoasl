@@ -11,14 +11,26 @@ config_version=5
 [application]
 
 config/name="Not So Advanced Squad Leader"
-run/main_scene="res://main.tscn"
+run/main_scene="res://scenes/main.tscn"
 config/features=PackedStringArray("4.2", "Forward Plus")
 config/icon="res://icon.svg"
 
 [autoload]
 
-Mode="*res://mode.gd"
-Order="*res://order.gd"
+Mode="*res://scripts/Mode.gd"
+Order="*res://scripts/Order.gd"
+Selection="*res://scripts/Selection.gd"
+MissionParameters="*res://scripts/MissionParameters.gd"
+Unit="*res://scripts/Unit.gd"
+
+[file_customization]
+
+folder_colors={
+"res://assets/": "purple",
+"res://resources/": "orange",
+"res://scenes/": "blue",
+"res://scripts/": "teal"
+}
 
 [input]
 

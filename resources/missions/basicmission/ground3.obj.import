@@ -1,0 +1,22 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://cyiwgq5mvp2wl"
+path="res://.godot/imported/ground3.obj-d82206418b5c1f685e3648831f53f8b3.mesh"
+
+[deps]
+
+files=["res://.godot/imported/ground3.obj-d82206418b5c1f685e3648831f53f8b3.mesh"]
+
+source_file="res://resources/missions/basicmission/ground3.obj"
+dest_files=["res://.godot/imported/ground3.obj-d82206418b5c1f685e3648831f53f8b3.mesh", "res://.godot/imported/ground3.obj-d82206418b5c1f685e3648831f53f8b3.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true
+force_disable_mesh_compression=false
