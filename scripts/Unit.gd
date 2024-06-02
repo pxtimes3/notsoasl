@@ -1,18 +1,13 @@
 extends Node
 
-@export var UnitScene: PackedScene
-@export var UnitSoldier: PackedScene
-@export var UnitMarker: PackedScene
+var UnitScene: PackedScene
+var UnitSoldier: PackedScene
+var UnitMarker: PackedScene
 
 var unitGroups = Selection.unitGroups
 var missionUnits : Dictionary = MissionParameters.MISSION_UNITS
+var playerUnits = {}
 
-var UnitID : String = ""
-var UnitType : String = ""
-var Company : String = ""	# id of the company
-var Platoon : String = ""	# id of the platoon
-var Fireteam : String = ""	# id of fireteam if applicable
-var Player : String
 var currentPlayer = ""
 var parent = ""
 var currentDefinitions = ""
@@ -37,17 +32,19 @@ func add_child_to_scene(child, parent):
 	else:
 		print("Parent node not found!")
 
-func load_and_instance_scene(scene_path: String):
+func load_and_instance_scene(scene_path: String, vars: Dictionary):
 	# Load the scene from the given path
 	var scene_to_instance = load(scene_path)
 	
 	# Check if the resource loaded is a PackedScene
 	if scene_to_instance is PackedScene:
 		# Instance the scene
-		scene_to_instance.instantiate()
+		var myScene = scene_to_instance.instantiate()
 		
-		# Add the instance as a child of the current node
-		#self.add_child(instance)
+		# Add to Units node
+		var unitsNode = get_tree().root.get_node("main/Units")
+		unitsNode.add_child(myScene)
+		return myScene
 	else:
 		# Print an error if the scene failed to load correctly
 		print("Error: The resource at ", scene_path, " is not a valid scene.")
@@ -73,39 +70,60 @@ func unitCreation(params : Dictionary, parent : String):
 				else:
 					unitParent = unit["parent"]
 				# create unit
-				add_child_to_scene(
-					newUnit(
-						unit["id"], 
-						unitParent, 
-						unit["unitType"],
-						unit["name"], 
-						currentPlayer
-					),
-					"units"
-				)
-			
-func newUnit(id : String, parent : String, unitType : String, unitName : Array = [], _player : String = ""):
-	print("createUnits got called with ID: ", id, " PARENT: ", parent, " UNITTYPE: ", unitType, " UNITNAME: ", unitName, " PLAYER: ", _player)
+				var myUnit = newUnit(unit["id"], unitParent, unit["unitType"], currentPlayer, unit["name"])
+				add_child_to_scene(myUnit,"Units")
+
+var unitsCreated = 0
+func newUnit(id : String, parent : String, unitType : String, _player : String, unitName : Array = []):
+	# print("createUnits got called with ID: ", id, " PARENT: ", parent, " UNITTYPE: ", unitType, " UNITNAME: ", unitName, " PLAYER: ", _player)
 	# fetch definitions for unit
 	var definition = getUnitDefinitions(unitType)
+	# set special equipment (radio etc. for the unit)
+	# TODO: refactor this
+	var unitVars = {
+		"unitEquipment": {
+			"radio": false,
+		}
+	}
+	if definition.has("radio"):
+		unitVars.unitEquipment.radio = definition["radio"]
 	
-	##var defTest = currentDefinitions + "." + typePath
-	#var definition = currentDefinitions["units"][typePath]
-	##var definition = units.keys()
-	##var definition = units[keys][typePath][type]
+	#var myUnitEntity = UnitEntity.new()
+	var myUnitEntity = load("res://scenes/3d/unit/Unit.tscn")
+	myUnitEntity = myUnitEntity.instantiate()
+	myUnitEntity = myUnitEntity.createUnitEntity(id,unitType,unitName[0], unitName[1], "", _player, unitVars.unitEquipment)
 	
-	## id : String
-	## name : Array = ["A","B"]
-	## type : String = ""
-	## definition : Dictionary = {}
-	## special : Dictionary = {}
-	var myUnitScene = load_and_instance_scene("res://scenes/3d/unit/Units.tscn")
-	##(id, unitName,"",{"count": 1})
-	#var position = Vector3(1 + (unitsCreated * 10),10,100)
-	#myUnit.look_at_from_position(position, Vector3(1,0,-100), Vector3(0, 1, 0), true)
+	myUnitEntity.add_to_group(_player)
 	
-	# var myUnit : PackedScene = UnitScene
-	return myUnitScene
+	# add entities to myUnitEntity
+	addEntitiesToUnit(myUnitEntity, definition.entities)
+	
+	# set unitmarker labels
+	myUnitEntity.get_node("UnitMarker/SubViewport/Control/Company").text = unitName[0]
+	myUnitEntity.get_node("UnitMarker/SubViewport/Control/Platoon").text = unitName[1]
+
+	# position unit
+	myUnitEntity.global_position = calculateSpawnPoint(myUnitEntity, _player)
+	myUnitEntity.look_at_from_position(myUnitEntity.position, Vector3(1,0,-100), Vector3(0, 1, 0), true)
+	
+	unitsCreated += 1
+	return myUnitEntity
+
+func calculateSpawnPoint(unit : UnitEntity, player : String) -> Vector3:
+	var currentPlayer = player
+	var deploymentZone = get_node("/root/main/" + player + "_deploy")
+	
+	# TODO: Refactor this mess!
+	# TODO: Check if unit is outside deployment zone
+	# TODO: Check how this fails for player2
+	
+	var aabb = deploymentZone.get_aabb() # xyz, whd
+	var spawnX = aabb.get_endpoint(1)[0] + 5 + (unitsCreated * 10)
+	var spawnZ = aabb.get_endpoint(1)[2] + 50
+
+	var position = Vector3(spawnX,10,spawnZ)
+	
+	return position
 
 func getUnitDefinitions(unitType : String):
 	# traverse definitions for unittype
@@ -159,23 +177,67 @@ func readDefinitions(file):
 	var data = JSON.parse_string(FileAccess.get_file_as_string("res://scripts/json/toe/" + file))
 	currentDefinitions = data
 
-func createUnit(id : String, name : Array, type : String, definition : Dictionary, player : String = "", special : Dictionary = {}):
-	var newUnit = UnitScene.new()
-	for i in definition["entities"]:
-		addEntityToUnit(definition[type]["units"]["entities"][i], id)
-	configureUnitMarker(id, name)
-	self.add_to_group(id)
-	unitGroups.append(id)
+#func createUnit(id : String, name : Array, type : String, definition : Dictionary, player : String = "", special : Dictionary = {}):
+	#var newUnit = UnitScene.new()
+	#for i in definition["entities"]:
+		#addEntityToUnit(definition[type]["units"]["entities"][i], id)
+	#
+	#self.add_to_group(id)
+	#unitGroups.append(id)
 	# return self
 	
+var spawnCoords = Vector3.UP
+var spawnX = 0
+var spawnZ = 0
+var soldierCount = 0
+func addEntitiesToUnit(unitScene : UnitEntity, definitions : Dictionary) -> UnitEntity:
+	var unitType = unitScene.UnitType
+	var count := 0
+	var num := 0
+	for i in definitions:
+		createAndAddEntity(unitScene, currentDefinitions["entities"][i], definitions[i], count)
+		#soldierCount += 1
+	spawnX = 0
+	spawnZ = 0
+	return unitScene
+	
 func configureUnitMarker(id : String, text : Array):
-	var UnitMarker = $UnitMarker/UnitMarkerSubviewPort/Control
-	UnitMarker.get_node("Company").text = text[0]
-	UnitMarker.get_node("Platoon").text = text[1]
-	UnitMarker.add_to_group(id)
+	return get_node("res://scenes/3d/unit/UnitMarker.tscn")
+	#print(self.get_children())
+	#UnitMarker.get_node("Company").text = text[0]
+	#UnitMarker.get_node("Platoon").text = text[1]
+	#UnitMarker.add_to_group(id)
+
+
+## creates a unit_soldier and adds it to myUnitEntity
+func createAndAddEntity(unitScene : UnitEntity, entityVars : Dictionary, num : int = 1, count : int = 0) -> void:
+	spawnCoords = Vector3.UP
+	
+	var entityModel = load("res://scenes/3d/unit/soldier/unit_soldier.tscn")
+	if entityVars.has("model"):
+		entityModel = load(entityVars.model) # well it's a scene, but you know...
+	
+	for x in num:
+		if spawnX > 6:
+			spawnZ = spawnZ - 2
+			spawnX = 0
+			
+		spawnCoords.x = spawnX + randf_range(-0.5,0.5)
+		spawnCoords.z = spawnZ + randf_range(-0.5,0.5)
+		
+		var mySoldier = entityModel.instantiate()
+		mySoldier.ID = "Soldier"+str(soldierCount)
+		mySoldier.UNIT["unit"] = unitScene.UnitID
+		mySoldier.global_position = spawnCoords
+		mySoldier.add_to_group(currentPlayer)
+		if x < 1:
+			mySoldier.UNIT["team"] = "0-1-A"
+		# print("Adding soldier at X: ", spawnX, " Z: ", spawnZ)
+		unitScene.add_child(mySoldier)
+		soldierCount += 1
+		spawnX += 2
 
 func addEntityToUnit(entities: int, groupid: String, model : String = "UnitSoldier"):
-	var spawnCoords = Vector3.UP
 	var unitcount = entities
 	
 	for x in unitcount:
@@ -196,7 +258,7 @@ func addEntityToUnit(entities: int, groupid: String, model : String = "UnitSoldi
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	pass # Replace with function body.
+	pass
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.

@@ -9,7 +9,7 @@ var missionpath : String = "res://resources/missions/basicmission/" # missionpat
 var missionSelector = MissionSelector.new() # .get_node("MainMenu") # debug
 # var missionparams = missionSelector.loadMissions()
 var missionParams = {}
-var mapSize = [0,0] # [z, x]
+var mapSize := []
 var _player : int = 0
 
  #debug variables
@@ -23,10 +23,13 @@ func _ready():
 	# load params
 	#missionparams = $MissionSelector.missionsDict
 	processParams(JSON.parse_string(FileAccess.get_file_as_string(missionpath + "parameters.json")))
+	#self.position.z = mapSize[0] / 2
+	#self.position.x = mapSize[1] / 2
+	self.global_position = Vector3(mapSize[1] / 2,0,mapSize[0] / 2)
 	# load map
 	# place objects (houses, roads, vegetation etc)
 	# create spawn areas
-	# createSpawnAreas()
+	createSpawnAreas()
 	# create units
 	#$Unit.new()
 	Unit.unitCreation(missionParams, "")
@@ -37,6 +40,12 @@ func _ready():
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	$Node2D/fps.text = "FPS " + str(Engine.get_frames_per_second())
+	var unitCount = 0
+	var units = get_node("Units").get_children(true)
+	for i in units:
+		unitCount += 1
+		unitCount += get_child_count()
+	$Node2D/unitsInScene.text = "unitEntities in Scene: " + str(unitCount)
 	
 func executeTurn():
 	# execute turn
@@ -47,20 +56,26 @@ func executeTurn():
 func processParams(json, extra : String = ""): # as a json-formatted string 
 	MissionParameters.MISSION_PARAMS = json
 	missionParams = json
+	mapSize = MissionParameters.MISSION_PARAMS.size
 	
 func createSpawnAreas():
+	var n = 0
 	for x in missionParams.deployment.keys():
 		var zone = MeshInstance3D.new()
 		var imm = BoxMesh.new()
 		var mat = StandardMaterial3D.new()
 		
-		mat.albedo_color = Color(0,0,1,0.1)
+		if n == 0: 
+			mat.albedo_color = Color(0,0,1,0.1)
+			n += 1
+		else: 
+			mat.albedo_color = Color(1,0,0,0.1)
 		imm.set_size(Vector3(200,1,50))
 		zone.mesh = imm
 		imm.material = mat
 		zone.transparency = 0.9
 		zone.cast_shadow = false
-		zone.global_position = calcZonePosition(x)
+		zone.position = calcZonePosition(x)
 		zone.name = str(x) + "_deploy"
 		zone.hide()
 		add_child(zone)
@@ -68,10 +83,14 @@ func createSpawnAreas():
 func calcZonePosition(player: String, z : int = 200, x : int = 50):
 	var mapz = mapSize[0]
 	var mapx = mapSize[1]
+	
+	# position utgår från mitten. x kan alltid vara 0 om zonen ska vara i mitten
+	# är kartan 250x250 så är pos.z + 25
 	var pos = Vector3(0,0,0)
-	pos.z = (mapx / 2) - (x / 2)
+	
+	pos.y = 10
+	pos.z = (mapz / 2) - (x / 2)
 	if player == "player2":
 		pos.z -= mapx - x
-	pos.y = 10
 	
 	return pos

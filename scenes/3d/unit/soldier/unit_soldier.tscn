@@ -1,5 +1,6 @@
-[gd_scene load_steps=5 format=3 uid="uid://jljry4t7f2v6"]
+[gd_scene load_steps=6 format=3 uid="uid://jljry4t7f2v6"]
 
+[ext_resource type="Script" path="res://scripts/3d/unit/soldier/unit_soldier.gd" id="1_3ykwu"]
 [ext_resource type="PackedScene" uid="uid://bdepchahfykxh" path="res://assets/models/unit/soldier/unit-soldier-blue.glb" id="1_q1wcl"]
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_jgqql"]
@@ -25,6 +26,7 @@ size = Vector3(0.594727, 1.48071, 0.548706)
 [node name="UnitSoldier" type="CharacterBody3D"]
 collision_layer = 2
 input_capture_on_drag = true
+script = ExtResource("1_3ykwu")
 
 [node name="Pivot" type="Node3D" parent="."]
 

@@ -1,6 +1,6 @@
 [gd_scene load_steps=7 format=3 uid="uid://ba5hmlo5tdrwy"]
 
-[ext_resource type="FontFile" uid="uid://cb86ktsh83ekv" path="res://art/fonts/Pixellari.ttf" id="1_uyc32"]
+[ext_resource type="FontFile" uid="uid://cb86ktsh83ekv" path="res://assets/fonts/Pixellari.ttf" id="1_uyc32"]
 
 [sub_resource type="Theme" id="Theme_388p8"]
 

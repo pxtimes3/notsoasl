@@ -15,7 +15,7 @@ data = PackedVector3Array(124.996, -0.0001, 29.7188, 39.0993, -0.0001, -3.4352, 
 [sub_resource type="SystemFont" id="SystemFont_i6yl5"]
 
 [node name="main" type="Node3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0300903, -0.386246, 0.286377)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 125, 0, 125)
 script = ExtResource("1_v1ljn")
 
 [node name="ground" type="StaticBody3D" parent="."]
@@ -40,8 +40,8 @@ shadow_blur = 1.616
 directional_shadow_blend_splits = true
 
 [node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.464842, 0.885394, 0, -0.885394, 0.464842, 0.33493, 157.217, 118.778)
-fov = 70.0
+transform = Transform3D(1, 0, 0, 0, 0.642788, 0.766044, 0, -0.766044, 0.642788, 0, 150, 220)
+fov = 50.0
 script = ExtResource("2_jj0fa")
 
 [node name="Node2D" type="Node2D" parent="."]
@@ -59,11 +59,20 @@ Mouse Middle to pan & tilt."
 fit_content = true
 scroll_active = false
 
-[node name="fps" type="Label" parent="Node2D"]
+[node name="unitsInScene" type="Label" parent="Node2D"]
 offset_left = 12.0
 offset_top = 560.0
 offset_right = 73.0
 offset_bottom = 583.0
+theme_override_fonts/font = SubResource("SystemFont_i6yl5")
+theme_override_font_sizes/font_size = 14
+text = "unitsInScene:"
+
+[node name="fps" type="Label" parent="Node2D"]
+offset_left = 12.0
+offset_top = 544.0
+offset_right = 73.0
+offset_bottom = 567.0
 theme_override_fonts/font = SubResource("SystemFont_i6yl5")
 theme_override_font_sizes/font_size = 14
 text = "FPS:"
@@ -74,5 +83,3 @@ text = "FPS:"
 visible = false
 
 [node name="Units" type="Node3D" parent="."]
-
-[node name="Unit" type="Node3D" parent="Units"]

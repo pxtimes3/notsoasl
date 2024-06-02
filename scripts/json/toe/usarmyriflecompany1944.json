@@ -127,6 +127,11 @@
 			"m1rifle": 1,
 			"30-06": 80,
 			"m1grenade": 2,
+		},
+		"squadleadasst": {
+			"m1rifle": 1,
+			"30-06": 80,
+			"m1grenade": 2,
 		}
 	}
 }

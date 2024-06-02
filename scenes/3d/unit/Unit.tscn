@@ -1,21 +1,24 @@
-[gd_scene load_steps=3 format=3 uid="uid://bjleatlgqd114"]
+[gd_scene load_steps=4 format=3 uid="uid://bjleatlgqd114"]
 
-[ext_resource type="Texture2D" uid="uid://bpiy43foqvqvs" path="res://assets/sprites/ui/unit/icon-ak47-48x48.svg" id="3_3sjol"]
-[ext_resource type="PackedScene" uid="uid://duy2qfuadj12s" path="res://scenes/3d/unit/UnitMarker.tscn" id="3_tgqyi"]
+[ext_resource type="Script" path="res://scripts/3d/unit/Unit.gd" id="1_alcf2"]
+[ext_resource type="PackedScene" uid="uid://1kbhjpa2kx0p" path="res://scenes/3d/unit/UnitMarker.tscn" id="3_cicnl"]
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_hon68"]
+viewport_path = NodePath("UnitMarker/SubViewport")
 
 [node name="Unit" type="Node3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.635904, 0)
+script = ExtResource("1_alcf2")
+metadata/player = ""
 
 [node name="UnitMarker" type="Sprite3D" parent="."]
-transform = Transform3D(0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, 0, 0, 0)
+transform = Transform3D(0.15, 0, 0, 0, 0.15, 0, 0, 0, 0.15, 0, -0.380499, 0)
 cast_shadow = 0
 billboard = 1
 fixed_size = true
-texture = ExtResource("3_3sjol")
+texture = SubResource("ViewportTexture_hon68")
 
-[node name="UnitMarkerSubviewPort" type="SubViewport" parent="UnitMarker"]
+[node name="SubViewport" type="SubViewport" parent="UnitMarker"]
 size = Vector2i(48, 48)
 
-[node name="Control" parent="UnitMarker/UnitMarkerSubviewPort" instance=ExtResource("3_tgqyi")]
-
-[connection signal="gui_input" from="UnitMarker/UnitMarkerSubviewPort/Control" to="." method="_on_control_gui_input"]
+[node name="Control" parent="UnitMarker/SubViewport" instance=ExtResource("3_cicnl")]

@@ -1,0 +1,38 @@
+{
+	"name": "Basic Mission",
+	"size": [250,250],
+	"datetime": "19441018@2100",
+	"weather": "",
+	"turns": 30,
+	"players": ["player1", "player2"],
+	"player1": {
+		"usarmyriflecompany": {
+			"definitions": "usarmyriflecompany1944.json",
+			"id": "riflecompany-1",
+			"type" : "riflecompany",
+			"meta": true,
+			"units": {
+				"rifleplatoon-1-squad-A" : {
+					"id": "rifleplatoon-1-squad-A",
+					"type": "unit",
+					"unitType": "rifleplatoon-squad",
+					"name": ["A", "A-A"],
+					"parent": "rifleplatoon-1-hq",
+				},
+			},
+		},
+	},
+	"player2": {
+		"germanriflecompany" : {
+			"meta": true
+		},
+	},
+	"objectives": {
+		"player1": {},
+		"player2": {"asd":[]}
+	},
+	"deployment": {
+		"player1": [50,200],
+		"player2": [50,250]
+	}
+}

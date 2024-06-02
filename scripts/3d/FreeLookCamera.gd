@@ -68,7 +68,7 @@ func _input(event):
 # Updates mouselook and movement every frame
 func _process(delta):
 	#rotation.x = clamp(rotation.x, -1, 1)
-	position.y = clamp(position.y, 0.3, 50)
+	position.y = clamp(position.y, 0.3, 200)
 	_update_mouselook()
 	_update_movement(delta)
 

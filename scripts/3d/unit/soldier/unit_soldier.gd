@@ -8,6 +8,7 @@ var target_velocity = Vector3.ZERO
 
 var PLAYER: bool = false # player controllable
 var SELECTED: bool = false
+var ID: int = 0;
 var NPC: bool = false # npc/civilian
 var UNIT: Dictionary = {} # unit id/ids
 var MORALE: int = 100 # green = 50, conscript = 70, veteran = 100, elite = 120
