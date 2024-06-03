@@ -15,33 +15,62 @@ func _ready():
 func _process(delta: float) -> void:
 	pass
 
-func select(caller, event, position):
-	if event is InputEventMouseButton:
-		# got a click
-		if event.button_index == 1 and event.pressed == true and not event.double_click:
-			print(event)
-			# not rightclick 
+func newUnitMarker(p := []):
+	print(p)
+
+func getSelectedUnits():
+	if selectedUnits.size() > 0:
+		return selectedUnits
+	else:
+		return false
+
+func select(caller, event, position) -> void:
+	if event is InputEventMouseButton and event.pressed == true:
+		"""
+		Check if event is left mouse button (on button down)
+		CTRL or Double Click multiselects units
+		Right Mouse opens the order menu etc... 
+		"""
+		if event.button_index == 1 \
+		and not Input.is_key_pressed(KEY_CTRL) \
+		and not event.double_click:
 			var groups = caller.get_groups()
 			# if not SHIFT, then unselect other units and select this unit
 			if not Input.is_key_pressed(KEY_SHIFT):
 				for x in selectedUnits.size():
 					get_tree().call_group(selectedUnits[x], "outline", 0)
-				get_tree().call_group(caller.UNIT.unit, "outline", 1)
+				var squad = caller.SQUAD
+				get_tree().call_group("squad-" + caller.SQUAD, "outline", 1)
 				# add this unit to selectedUnits
-				selectedUnits = [caller.UNIT.unit]
+				selectedUnits = [caller.UNITID]
 			else:
-				get_tree().call_group(caller.UNIT.unit, "outline", 1)
-				# shift is pressed, appending to selectedUnits
-				selectedUnits.append(caller.UNIT.unit)
-				print(selectedUnits)
-		elif event.double_click:
-			if caller.UNIT.unit.ends_with("hq"):
-				pass
-			print("doubleclick!")
-			print(unitGroups)
-		
-		
+				get_tree().call_group("squad-" + caller.SQUAD, "outline", 1)
+				# shift is pressed, appending to selectedUnitssquad
+				if caller.UNITID not in selectedUnits:
+					selectedUnits.append(caller.UNITID)
+				else: 
+					selectedUnits.erase(caller.UNITID)
+		elif event.button_index == 1 and Input.is_key_pressed(KEY_CTRL):
+			"""
+			Is CTRL pressed?
+			"""
+			get_tree().call_group("platoon-" + caller.PLATOON, "outline", 1)
+			var addUnits = get_tree().get_nodes_in_group("platoon-" + caller.PLATOON)
+			if not Input.is_key_pressed(KEY_SHIFT):
+				selectedUnits = []
+			for n in addUnits:
+				var unitClass = n.get_class()
+				if unitClass != "CharacterBody3D" and n.UNITID not in selectedUnits:
+					selectedUnits.append(n.UNITID)
+		print(selectedUnits)
+
 func unselect(caller, event, position):
+	pass
+
+func showMouseOver():
+	pass
+	
+func hideMouseOver():
 	pass
 
 # if mouse_entered:

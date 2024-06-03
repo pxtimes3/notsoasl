@@ -1,6 +1,9 @@
 extends Node
 
 signal openOrdersMenu
+signal ordersMenu
+
+var currentOrders = {}
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -13,4 +16,22 @@ func _process(delta: float) -> void:
 
 # shows the orders menu at mouse position
 func showOrdersMenu(pos : Vector2):
+	print("I WAS EMITTED!", pos)
+	ordersMenu.emit(pos)
+
+func drawOrderLine() -> void:
+	# get currently selected units position = start
+	var startPos = getSelectedUnitPosition()
+	if startPos:
+		pass
+	# follow cursor
+	# click = place endpoint
+	# shift-click = place waypoint => new start?
 	pass
+
+func getSelectedUnitPosition():
+	var startPosition = Vector3.UP
+	if Selection.getSelectedUnits():
+		return startPosition
+	else:
+		return false

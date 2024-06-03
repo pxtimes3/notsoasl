@@ -5,10 +5,11 @@ signal ordersMenu
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	self.hide()
-	Order.openOrdersMenu.connect(showMenu)
+	Order.ordersMenu.connect(showMenu)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
+	
 	var menuArea = $VBoxContainer.get_rect()
 	if self.visible:
 		if not Rect2(menuArea['position'], menuArea['size']).has_point(get_local_mouse_position()):

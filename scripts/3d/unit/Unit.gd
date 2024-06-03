@@ -5,25 +5,29 @@ extends Node3D
 var unitEntityScene: PackedScene = load("res://scenes/3d/unit/Unit.tscn")
 var unitMarkerScene : PackedScene = load("res://scenes/3d/unit/UnitMarker.tscn")
 
-var UnitID : String = ""
-var UnitType : String = ""
-var Company : String = ""	# id of the company
-var Platoon : String = ""	# id of the platoon
-var Fireteam : String = ""	# id of fireteam if applicable
-var Player : String = ""
-var UnitEquipment : Dictionary = {
+var UNITID : String = ""
+var UNITTYPE : String = ""
+var COMPANY : String = ""	# id of the company
+var PLATOON : String = ""	# id of the platoon
+var SQUAD : String = ""		# id of squad
+var PLAYER : String = ""
+var UNITEQUIPMENT : Dictionary = {
 	"radio" : false,
 }
 
-func createUnitEntity(UnitID:String, UnitType:String, Company:String, Platoon:String, Fireteam:String, Player: String, UnitEquipment:Dictionary) -> UnitEntity:
+func createUnitEntity(UnitID:String, UnitType:String, Company:String, Platoon:String, Squad:String, Player: String, UnitEquipment:Dictionary) -> UnitEntity:
 	# var new_unitEntity = unitEntityScene.instantiate()
-	self.UnitID = UnitID
-	self.UnitType = UnitType
-	self.Company = Company
-	self.Platoon = Platoon
-	self.Fireteam = Fireteam
-	self.Player = Player
-	self.UnitEquipment = UnitEquipment
-	#var unitmarker = get_node("UnitMarker")
+	self.UNITID = UnitID
+	self.UNITTYPE = UnitType
+	self.COMPANY = Company
+	self.PLATOON = Platoon
+	self.SQUAD = Squad
+	self.PLAYER = Player
+	self.UNITEQUIPMENT = UnitEquipment
+	
+	add_to_group("unit-"+UNITID)
+	add_to_group("company-"+COMPANY)
+	add_to_group("platoon-"+PLATOON)
+	add_to_group("squad"+SQUAD)
 	
 	return self

@@ -1,3 +1,5 @@
+# TODO: refactor this
+
 extends Node
 
 var UnitScene: PackedScene
@@ -75,35 +77,43 @@ func unitCreation(params : Dictionary, parent : String):
 
 var unitsCreated = 0
 func newUnit(id : String, parent : String, unitType : String, _player : String, unitName : Array = []):
-	# print("createUnits got called with ID: ", id, " PARENT: ", parent, " UNITTYPE: ", unitType, " UNITNAME: ", unitName, " PLAYER: ", _player)
 	# fetch definitions for unit
 	var definition = getUnitDefinitions(unitType)
 	# set special equipment (radio etc. for the unit)
-	# TODO: refactor this
 	var unitVars = {
 		"unitEquipment": {
 			"radio": false,
 		}
 	}
+	var unitCompany = unitName[0]
+	var unitPlatoon = unitName[1]
+	var unitSquad   = unitName[2]
+	var myUnitEntity = load("res://scenes/3d/unit/Unit.tscn")
+
 	if definition.has("radio"):
 		unitVars.unitEquipment.radio = definition["radio"]
 	
-	#var myUnitEntity = UnitEntity.new()
-	var myUnitEntity = load("res://scenes/3d/unit/Unit.tscn")
 	myUnitEntity = myUnitEntity.instantiate()
-	myUnitEntity = myUnitEntity.createUnitEntity(id,unitType,unitName[0], unitName[1], "", _player, unitVars.unitEquipment)
+	myUnitEntity = myUnitEntity.createUnitEntity(id, unitType, unitCompany, unitPlatoon, unitSquad, _player, unitVars.unitEquipment)
 	
 	myUnitEntity.add_to_group(_player)
+	myUnitEntity.add_to_group("company-" + unitCompany)
+	myUnitEntity.add_to_group("platoon-" + unitPlatoon)
+	myUnitEntity.add_to_group("squad-" + unitSquad)
 	
 	# add entities to myUnitEntity
 	addEntitiesToUnit(myUnitEntity, definition.entities)
 	
 	# set unitmarker labels
-	myUnitEntity.get_node("UnitMarker/SubViewport/Control/Company").text = unitName[0]
-	myUnitEntity.get_node("UnitMarker/SubViewport/Control/Platoon").text = unitName[1]
+	myUnitEntity.get_node("UnitMarker/SubViewport/Control/Company").text = unitCompany
+	if unitSquad != "":
+		myUnitEntity.get_node("UnitMarker/SubViewport/Control/Platoon").text = unitPlatoon + "-" + unitSquad
+	else: 
+		myUnitEntity.get_node("UnitMarker/SubViewport/Control/Platoon").text = unitPlatoon
+	
 
 	# position unit
-	myUnitEntity.global_position = calculateSpawnPoint(myUnitEntity, _player)
+	myUnitEntity.position = calculateSpawnPoint(myUnitEntity, _player)
 	myUnitEntity.look_at_from_position(myUnitEntity.position, Vector3(1,0,-100), Vector3(0, 1, 0), true)
 	
 	unitsCreated += 1
@@ -191,7 +201,7 @@ var spawnX = 0
 var spawnZ = 0
 var soldierCount = 0
 func addEntitiesToUnit(unitScene : UnitEntity, definitions : Dictionary) -> UnitEntity:
-	var unitType = unitScene.UnitType
+	var unitType = unitScene.UNITTYPE
 	var count := 0
 	var num := 0
 	for i in definitions:
@@ -226,13 +236,21 @@ func createAndAddEntity(unitScene : UnitEntity, entityVars : Dictionary, num : i
 		spawnCoords.z = spawnZ + randf_range(-0.5,0.5)
 		
 		var mySoldier = entityModel.instantiate()
-		mySoldier.ID = "Soldier"+str(soldierCount)
-		mySoldier.UNIT["unit"] = unitScene.UnitID
-		mySoldier.global_position = spawnCoords
-		mySoldier.add_to_group(currentPlayer)
-		if x < 1:
-			mySoldier.UNIT["team"] = "0-1-A"
-		# print("Adding soldier at X: ", spawnX, " Z: ", spawnZ)
+		
+		mySoldier.COMPANY = unitScene.COMPANY	# id of the company
+		mySoldier.PLATOON = unitScene.PLATOON	# id of the platoon
+		mySoldier.SQUAD = unitScene.SQUAD	# id of fireteam if applicable
+		mySoldier.PLAYER = unitScene.PLAYER
+		mySoldier.ID = "soldier"+str(soldierCount)
+		mySoldier.EQUIPMENT = entityVars
+		
+		mySoldier.add_to_group(unitScene.PLAYER)
+		mySoldier.add_to_group("company-" + unitScene.COMPANY)
+		mySoldier.add_to_group("platoon-" + unitScene.PLATOON)
+		mySoldier.add_to_group("squad-" + unitScene.SQUAD)
+		
+		mySoldier.position = spawnCoords
+		
 		unitScene.add_child(mySoldier)
 		soldierCount += 1
 		spawnX += 2

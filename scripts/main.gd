@@ -30,10 +30,11 @@ func _ready():
 	# place objects (houses, roads, vegetation etc)
 	# create spawn areas
 	createSpawnAreas()
-	# create units
-	#$Unit.new()
+	# create & place units
 	Unit.unitCreation(missionParams, "")
-	# place units
+	# removeSpawnAreas
+	get_node("player1_deploy").free()
+	get_node("player2_deploy").free()
 
 
 	
@@ -94,3 +95,10 @@ func calcZonePosition(player: String, z : int = 200, x : int = 50):
 		pos.z -= mapx - x
 	
 	return pos
+
+# move orders node
+func _on_ground_input_event(camera, event, click_position, click_normal, shape_idx):
+	if event is InputEventMouseButton and event.pressed:
+		$Marker.transform.origin = click_position
+		#$Player.target = click_position
+		print(click_position)
