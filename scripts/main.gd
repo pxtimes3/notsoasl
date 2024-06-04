@@ -40,13 +40,19 @@ func _ready():
 	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	$Node2D/fps.text = "FPS " + str(Engine.get_frames_per_second())
+	$Node2D/Control/VBoxContainer/fps.text = str("FPS: ", "%.0f" % (1.0 / delta))
+	$Node2D/Control/VBoxContainer/unitsInScene.text = str("Units in scene ", "%.0f" % (getNumUnitsInScene()))
+	$Node2D/Control/VBoxContainer/mode.text = str("Mode ", "%s" % (Mode.MODE))
+	#Debug.log("Selected units: ", getSelectedUnits())
+	pass
+	
+func getNumUnitsInScene() -> int:
 	var unitCount = 0
 	var units = get_node("Units").get_children(true)
 	for i in units:
 		unitCount += 1
 		unitCount += get_child_count()
-	$Node2D/unitsInScene.text = "unitEntities in Scene: " + str(unitCount)
+	return unitCount
 	
 func executeTurn():
 	# execute turn

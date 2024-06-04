@@ -13,6 +13,7 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
+	
 	pass
 
 func newUnitMarker(p := []):
@@ -34,6 +35,7 @@ func select(caller, event, position) -> void:
 		if event.button_index == 1 \
 		and not Input.is_key_pressed(KEY_CTRL) \
 		and not event.double_click:
+			print("input called on unit/unit-entity")
 			var groups = caller.get_groups()
 			# if not SHIFT, then unselect other units and select this unit
 			if not Input.is_key_pressed(KEY_SHIFT):
@@ -48,8 +50,10 @@ func select(caller, event, position) -> void:
 				# shift is pressed, appending to selectedUnitssquad
 				if caller.UNITID not in selectedUnits:
 					selectedUnits.append(caller.UNITID)
+					print(selectedUnits)
 				else: 
 					selectedUnits.erase(caller.UNITID)
+					print(selectedUnits)
 		elif event.button_index == 1 and Input.is_key_pressed(KEY_CTRL):
 			"""
 			Is CTRL pressed?
@@ -73,6 +77,12 @@ func showMouseOver():
 func hideMouseOver():
 	pass
 
+func _unhandled_input(event):
+	if event is InputEventMouseButton \
+	and event.button_index == 1:
+	# TODO: Handle unselecting units by clicking anywhere else
+		push_warning("Handle unselecting units by clicking anywhere else")
+	
 # if mouse_entered:
 		##print("mouse entered name:",self.name)
 		#if event is InputEventMouseButton and Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):

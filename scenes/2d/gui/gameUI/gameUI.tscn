@@ -1,6 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://ba5hmlo5tdrwy"]
-
-[ext_resource type="FontFile" uid="uid://cb86ktsh83ekv" path="res://assets/fonts/Pixellari.ttf" id="1_uyc32"]
+[gd_scene load_steps=5 format=3 uid="uid://ba5hmlo5tdrwy"]
 
 [sub_resource type="Theme" id="Theme_388p8"]
 
@@ -11,8 +9,6 @@ content_margin_left = 10.0
 content_margin_right = 10.0
 
 [sub_resource type="Theme" id="Theme_rxqto"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_rtipt"]
 
 [node name="GameUi" type="Control"]
 layout_mode = 3
@@ -64,42 +60,3 @@ grow_vertical = 2
 theme = SubResource("Theme_rxqto")
 theme_override_constants/outline_size = 0
 text = "Start Turn"
-
-[node name="Unit selection" type="Control" parent="Panel"]
-anchors_preset = 0
-offset_left = -10.0
-offset_right = 190.0
-offset_bottom = 43.0
-
-[node name="Headline" type="Label" parent="Panel/Unit selection"]
-clip_contents = true
-custom_minimum_size = Vector2(150, 20)
-layout_mode = 2
-offset_left = 10.0
-offset_right = 200.0
-offset_bottom = 20.0
-size_flags_vertical = 0
-theme_override_font_sizes/font_size = 10
-text = "Selected unit"
-vertical_alignment = 1
-autowrap_mode = 3
-clip_text = true
-text_overrun_behavior = 1
-
-[node name="Body" type="Label" parent="Panel/Unit selection"]
-clip_contents = true
-custom_minimum_size = Vector2(150, 24)
-layout_mode = 2
-offset_left = 10.0
-offset_top = 19.0
-offset_right = 200.0
-offset_bottom = 46.0
-grow_vertical = 2
-theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_constants/line_spacing = -1
-theme_override_fonts/font = ExtResource("1_uyc32")
-theme_override_font_sizes/font_size = 10
-theme_override_styles/normal = SubResource("StyleBoxEmpty_rtipt")
-autowrap_mode = 3
-clip_text = true
-text_overrun_behavior = 1
