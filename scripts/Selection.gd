@@ -19,12 +19,17 @@ func _process(delta: float) -> void:
 func newUnitMarker(p := []):
 	print(p)
 
-func getSelectedUnits():
+
+## Returns the currently selected units, if any.
+func getSelectedUnits() -> Array:
 	if selectedUnits.size() > 0:
 		return selectedUnits
-	else:
-		return false
+		
+	return []
 
+
+## Handles selection of units. Stores them in the selectedUnits array.
+## caller: MyUnitEntity
 func select(caller, event, position) -> void:
 	if event is InputEventMouseButton and event.pressed == true:
 		"""
@@ -44,15 +49,15 @@ func select(caller, event, position) -> void:
 				var squad = caller.SQUAD
 				get_tree().call_group("squad-" + caller.SQUAD, "outline", 1)
 				# add this unit to selectedUnits
-				selectedUnits = [caller.UNITID]
+				selectedUnits = [caller]
 			else:
 				get_tree().call_group("squad-" + caller.SQUAD, "outline", 1)
 				# shift is pressed, appending to selectedUnitssquad
-				if caller.UNITID not in selectedUnits:
-					selectedUnits.append(caller.UNITID)
+				if caller not in selectedUnits:
+					selectedUnits.append(caller)
 					print(selectedUnits)
 				else: 
-					selectedUnits.erase(caller.UNITID)
+					selectedUnits.erase(caller)
 					print(selectedUnits)
 		elif event.button_index == 1 and Input.is_key_pressed(KEY_CTRL):
 			"""
@@ -64,8 +69,8 @@ func select(caller, event, position) -> void:
 				selectedUnits = []
 			for n in addUnits:
 				var unitClass = n.get_class()
-				if unitClass != "CharacterBody3D" and n.UNITID not in selectedUnits:
-					selectedUnits.append(n.UNITID)
+				if unitClass != "CharacterBody3D" and n not in selectedUnits:
+					selectedUnits.append(n)
 		print(selectedUnits)
 
 func unselect(caller, event, position):
