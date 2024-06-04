@@ -1,5 +1,17 @@
 extends Node
 
+var points:Array
+var lines:Array
+
+var mouse_line: MeshInstance3D
+
+func _ready() -> void:
+	call_deferred("_init_mouse_line")
+
+func _process(delta: float) -> void:
+	if Mode.MODE == 1:
+
+		pass
 
 func point(pos: Vector3, radius = 0.05, color = Color.WHITE_SMOKE, persist_ms = 0):
 	var mesh_instance := MeshInstance3D.new()

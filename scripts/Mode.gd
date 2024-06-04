@@ -1,8 +1,8 @@
 extends Node
 
 enum GAMESTATE {NORMAL, ORDER, TURN}
-
 @export var MODE = GAMESTATE.NORMAL
+
 
 func _unhandled_key_input(event):
 	if Input.is_action_pressed("order_patrol"):
@@ -18,3 +18,4 @@ func _process(delta: float) -> void:
 		MODE = GAMESTATE.NORMAL
 	if Input.is_action_pressed("order_patrol") and Selection.selectedUnits.size() > 0:
 		MODE = GAMESTATE.ORDER
+		Order.drawOrderLine()

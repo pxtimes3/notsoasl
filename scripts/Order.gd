@@ -12,6 +12,7 @@ func _ready() -> void:
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
+
 	pass
 
 # shows the orders menu at mouse position
@@ -31,7 +32,11 @@ func drawOrderLine() -> void:
 
 func getSelectedUnitPosition():
 	var startPosition = Vector3.UP
-	if Selection.getSelectedUnits():
+	var units = Selection.getSelectedUnits()
+	
+	if units.size() > 0:
+		var lastUnit = units[units.size() - 1]
+		var position = lastUnit.position
+		print(position)
 		return startPosition
-	else:
-		return false
+

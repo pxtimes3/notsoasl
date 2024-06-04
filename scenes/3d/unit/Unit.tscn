@@ -1,9 +1,8 @@
-[gd_scene load_steps=10 format=3 uid="uid://bjleatlgqd114"]
+[gd_scene load_steps=9 format=3 uid="uid://bjleatlgqd114"]
 
 [ext_resource type="Script" path="res://scripts/3d/unit/Unit.gd" id="1_alcf2"]
 [ext_resource type="PackedScene" uid="uid://1kbhjpa2kx0p" path="res://scenes/3d/unit/UnitMarker.tscn" id="3_cicnl"]
 [ext_resource type="Script" path="res://scripts/3d/unit/NewMarker.gd" id="3_n5xyf"]
-[ext_resource type="Texture2D" uid="uid://bpiy43foqvqvs" path="res://assets/sprites/ui/unit/icon-ak47-48x48.svg" id="4_a3l6h"]
 [ext_resource type="Texture2D" uid="uid://bo0q72o54n0sp" path="res://assets/sprites/ui/backgrounds/ww34.jpg" id="5_ixogc"]
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_hon68"]
@@ -24,7 +23,7 @@ billboard_keep_scale = true
 resource_local_to_scene = true
 size = Vector3(8, 8, 8)
 
-[node name="Unit" type="Node3D" groups=["company", "unit"]]
+[node name="Unit" type="Node3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.635904, 0)
 script = ExtResource("1_alcf2")
 metadata/player = ""
@@ -59,70 +58,3 @@ input_capture_on_drag = true
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="UnitMarker/Quad/Area3D"]
 shape = SubResource("BoxShape3D_mv3md")
-
-[node name="Marker" type="Node3D" parent="."]
-process_mode = 3
-visible = false
-script = ExtResource("3_n5xyf")
-
-[node name="Quad" type="MeshInstance3D" parent="Marker"]
-mesh = SubResource("QuadMesh_xlmle")
-skeleton = NodePath("../..")
-surface_material_override/0 = SubResource("StandardMaterial3D_j5n1b")
-
-[node name="Area3D" type="Area3D" parent="Marker/Quad"]
-input_capture_on_drag = true
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Marker/Quad/Area3D"]
-shape = SubResource("BoxShape3D_mv3md")
-
-[node name="SubViewport" type="SubViewport" parent="Marker"]
-gui_embed_subwindows = true
-size = Vector2i(48, 48)
-render_target_update_mode = 4
-
-[node name="GUI" type="Control" parent="Marker/SubViewport"]
-layout_mode = 3
-anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
-mouse_filter = 1
-
-[node name="Panel" type="Panel" parent="Marker/SubViewport/GUI"]
-layout_mode = 0
-offset_right = 512.0
-offset_bottom = 512.0
-
-[node name="ColorRect" type="ColorRect" parent="Marker/SubViewport/GUI/Panel"]
-layout_mode = 1
-anchors_preset = 1
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -40.0
-offset_bottom = 40.0
-grow_horizontal = 0
-color = Color(1, 0, 0, 1)
-
-[node name="TextureRect" type="TextureRect" parent="Marker/SubViewport/GUI/Panel"]
-layout_mode = 1
-anchors_preset = 1
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -40.0
-offset_right = 472.0
-offset_bottom = 512.0
-grow_horizontal = 0
-texture = ExtResource("4_a3l6h")
-expand_mode = 1
-
-[node name="VBoxContainer" type="VBoxContainer" parent="Marker/SubViewport/GUI/Panel"]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
-
-[node name="Label" type="Label" parent="Marker/SubViewport/GUI/Panel/VBoxContainer"]
-layout_mode = 2
-text = "Company"
-
-[node name="Label2" type="Label" parent="Marker/SubViewport/GUI/Panel/VBoxContainer"]
-layout_mode = 2
