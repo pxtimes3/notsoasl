@@ -49,7 +49,7 @@ func _mouse_exited_area():
 func _mouse_input_event(_camera: Camera3D, event: InputEvent, event_position: Vector3, _normal: Vector3, _shape_idx: int):
 	if event is InputEventMouseButton:
 		var caller = get_parent_node_3d() # should get us the Unit-node.
-		Selection.select(caller, event, event_position)
+		Selection.select(caller, event)
 	# node_viewport.push_input(event)
 
 

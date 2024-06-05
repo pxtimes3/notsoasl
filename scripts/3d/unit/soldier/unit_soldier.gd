@@ -35,7 +35,7 @@ func _on_input_event(camera, event, position, normal, shape_idx):
 		if event.button_index == 1:
 			# selection
 			var unit = self.get_parent_node_3d()
-			Selection.select(unit, event, position)
+			Selection.select(unit, event)
 		elif event.button_index == 2:
 			# open order menu
 			print("Open the menu!")

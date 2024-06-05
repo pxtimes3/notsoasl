@@ -12,9 +12,8 @@ func _ready():
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	
-	pass
+# func _process(delta: float) -> void:
+#	pass
 
 func newUnitMarker(p := []):
 	print(p)
@@ -30,7 +29,7 @@ func getSelectedUnits() -> Array:
 
 ## Handles selection of units. Stores them in the selectedUnits array.
 ## caller: MyUnitEntity
-func select(caller, event, position) -> void:
+func select(caller, event) -> void:
 	if event is InputEventMouseButton and event.pressed == true:
 		"""
 		Check if event is left mouse button (on button down)
@@ -56,10 +55,10 @@ func select(caller, event, position) -> void:
 				# shift is pressed, appending to selectedUnitssquad
 				if caller not in selectedUnits:
 					selectedUnits.append(caller)
-					print(selectedUnits)
+					# prints("selectedUnits appended.", selectedUnits)
 				else: 
 					selectedUnits.erase(caller)
-					print(selectedUnits)
+					# prints("Removed caller:", str(caller), "from selectedunits.", selectedUnits)
 		elif event.button_index == 1 and Input.is_key_pressed(KEY_CTRL):
 			"""
 			Is CTRL pressed?
@@ -72,7 +71,7 @@ func select(caller, event, position) -> void:
 				var unitClass = n.get_class()
 				if unitClass != "CharacterBody3D" and n not in selectedUnits:
 					selectedUnits.append(n)
-		print(selectedUnits)
+		# print(selectedUnits)
 
 func unselect(caller, event, position):
 	pass
@@ -88,7 +87,16 @@ func _unhandled_input(event):
 	and event.button_index == 1:
 	# TODO: Handle unselecting units by clicking anywhere else
 		push_warning("Handle unselecting units by clicking anywhere else")
-	
+
+
+func showOrderLines() -> void:
+	# TODO: Fix me
+	pass
+
+func hideOrderLines() -> void:
+	# TODO: Fix me
+	pass
+
 # if mouse_entered:
 		##print("mouse entered name:",self.name)
 		#if event is InputEventMouseButton and Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
