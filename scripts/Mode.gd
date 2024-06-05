@@ -18,4 +18,6 @@ func _process(delta: float) -> void:
 		MODE = GAMESTATE.NORMAL
 	if Input.is_action_pressed("order_patrol") and Selection.selectedUnits.size() > 0:
 		MODE = GAMESTATE.ORDER
-		Order.drawOrderLine()
+
+func endMode(mode : GAMESTATE) -> void:
+	MODE = GAMESTATE.NORMAL
