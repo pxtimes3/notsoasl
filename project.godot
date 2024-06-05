@@ -24,6 +24,7 @@ MissionParameters="*res://scripts/MissionParameters.gd"
 Unit="*res://scripts/Unit.gd"
 Draw3d="*res://scripts/Draw3D.gd"
 debug_console="*res://addons/copper_dc/debug_console.tscn"
+Debug="*res://addons/awesome_debug_log/autoloads/debug.tscn"
 
 [editor]
 
@@ -32,12 +33,13 @@ version_control/autoload_on_startup=true
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/Todo_Manager/plugin.cfg", "res://addons/copper_dc/plugin.cfg")
+enabled=PackedStringArray("res://addons/Todo_Manager/plugin.cfg", "res://addons/awesome_debug_log/plugin.cfg")
 
 [file_customization]
 
 folder_colors={
 "res://assets/": "purple",
+"res://doc/": "gray",
 "res://resources/": "orange",
 "res://scenes/": "blue",
 "res://scripts/": "teal"
