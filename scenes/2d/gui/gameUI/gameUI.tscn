@@ -12,6 +12,37 @@ content_margin_right = 10.0
 
 [node name="GameUi" type="Control"]
 layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+mouse_filter = 2
+
+[node name="TopMiddle" type="Control" parent="."]
+custom_minimum_size = Vector2(0, 60)
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+grow_horizontal = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="TopMiddle"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 23.0
+grow_horizontal = 2
+
+[node name="Text" type="Label" parent="TopMiddle/MarginContainer"]
+layout_mode = 2
+horizontal_alignment = 1
+clip_text = true
+max_lines_visible = 2
+
+[node name="Bottom" type="Control" parent="."]
+layout_mode = 1
 anchors_preset = 12
 anchor_top = 1.0
 anchor_right = 1.0
@@ -19,44 +50,40 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 0
 
-[node name="ColorRect" type="ColorRect" parent="."]
+[node name="ColorRect" type="ColorRect" parent="Bottom"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_top = -62.0
-offset_bottom = -2.0
+offset_top = -60.0
 grow_horizontal = 2
 grow_vertical = 2
 theme = SubResource("Theme_388p8")
 color = Color(0.180005, 0.180005, 0.180005, 1)
 
-[node name="Panel" type="Panel" parent="."]
+[node name="Panel" type="Panel" parent="Bottom"]
+custom_minimum_size = Vector2(0, 60)
 layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.01
-anchor_top = 0.01
-anchor_right = 0.99
-anchor_bottom = 0.99
-offset_top = -30.0
-offset_bottom = -30.0
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
 grow_horizontal = 2
-grow_vertical = 2
+grow_vertical = 0
 theme = SubResource("Theme_dnpda")
 theme_override_styles/panel = SubResource("StyleBoxEmpty_877mm")
 
-[node name="Button" type="Button" parent="Panel"]
+[node name="HBoxContainer" type="HBoxContainer" parent="Bottom/Panel"]
+layout_direction = 3
 layout_mode = 1
-anchors_preset = 6
-anchor_left = 1.0
-anchor_top = 0.5
+anchors_preset = 15
 anchor_right = 1.0
-anchor_bottom = 0.5
-offset_left = -87.0
-offset_top = -15.5
-offset_bottom = 15.5
-grow_horizontal = 0
+anchor_bottom = 1.0
+grow_horizontal = 2
 grow_vertical = 2
+
+[node name="Button" type="Button" parent="Bottom/Panel/HBoxContainer"]
+layout_mode = 2
 theme = SubResource("Theme_rxqto")
 theme_override_constants/outline_size = 0
 text = "Start Turn"

@@ -3,6 +3,7 @@ extends Node
 enum GAMESTATE {NORMAL, ORDER, TURN}
 @export var MODE = GAMESTATE.NORMAL
 
+@onready var textTopMiddle = get_node("/root/main/GameUi/TopMiddle/MarginContainer/Text")
 
 func _unhandled_key_input(event):
 	if Input.is_action_pressed("order_patrol"):
@@ -16,8 +17,11 @@ func _unhandled_key_input(event):
 func _process(delta: float) -> void:
 	if Selection.selectedUnits.size() == 0 and MODE == GAMESTATE.ORDER:
 		MODE = GAMESTATE.NORMAL
+		
 	if Input.is_action_pressed("order_patrol") and Selection.selectedUnits.size() > 0:
 		MODE = GAMESTATE.ORDER
+		textTopMiddle.text = "ORDERDRAWLINE"
 
 func endMode(mode : GAMESTATE) -> void:
+	textTopMiddle.text = ""
 	MODE = GAMESTATE.NORMAL
