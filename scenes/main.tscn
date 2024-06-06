@@ -19,8 +19,8 @@ top_radius = 1.0
 bottom_radius = 1.0
 height = 0.5
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_h2oq6"]
-albedo_color = Color(1, 0, 1, 1)
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_aeffw"]
+shading_mode = 0
 
 [node name="main" type="Node3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 125, 0, 125)
@@ -110,7 +110,16 @@ text = "unitsInScene:"
 
 [node name="Marker" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.687027, 2.7123, -0.241356)
+visible = false
+transparency = 0.75
+cast_shadow = 0
 mesh = SubResource("CylinderMesh_n25ok")
-surface_material_override/0 = SubResource("StandardMaterial3D_h2oq6")
+surface_material_override/0 = SubResource("StandardMaterial3D_aeffw")
+
+[node name="MarkerLight" type="OmniLight3D" parent="Marker"]
+light_energy = 4.474
+light_size = 1.0
+light_bake_mode = 1
+omni_shadow_mode = 0
 
 [connection signal="input_event" from="ground" to="." method="_on_ground_input_event"]
