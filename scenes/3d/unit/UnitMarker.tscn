@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://1kbhjpa2kx0p"]
+[gd_scene load_steps=8 format=3 uid="uid://c5y1rfr0y7ipr"]
 
 [ext_resource type="Texture2D" uid="uid://bpiy43foqvqvs" path="res://assets/sprites/ui/unit/icon-ak47-48x48.svg" id="1_hn1p6"]
 [ext_resource type="FontFile" uid="uid://cb86ktsh83ekv" path="res://assets/fonts/Pixellari.ttf" id="2_pxvia"]

@@ -1,8 +1,8 @@
 [gd_scene load_steps=9 format=3 uid="uid://bjleatlgqd114"]
 
 [ext_resource type="Script" path="res://scripts/3d/unit/Unit.gd" id="1_alcf2"]
-[ext_resource type="PackedScene" uid="uid://1kbhjpa2kx0p" path="res://scenes/3d/unit/UnitMarker.tscn" id="3_cicnl"]
-[ext_resource type="Script" path="res://scripts/3d/unit/NewMarker.gd" id="3_n5xyf"]
+[ext_resource type="PackedScene" path="res://scenes/3d/unit/UnitMarker.tscn" id="3_cicnl"]
+[ext_resource type="Script" path="res://scripts/3d/unit/UnitMarker.gd" id="3_n5xyf"]
 [ext_resource type="Texture2D" uid="uid://bo0q72o54n0sp" path="res://assets/sprites/ui/backgrounds/ww34.jpg" id="5_ixogc"]
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_hon68"]
