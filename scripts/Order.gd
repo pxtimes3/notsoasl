@@ -6,31 +6,27 @@ signal ordersMenu
 var currentOrders = {}
 var points = []
 var lines = []
+@onready var indicator = get_node("/root/main/Marker")
 var orderline : OrderLine
 
-# Called when the node enters the scene tree for the first time.
-# func _ready() -> void:
-#	pass # Replace with function body.
-
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-# func _process(delta: float) -> void:
-#	pass
-
-
 func _input(event: InputEvent) -> void:
-	if event.is_action_pressed("mouse_left_click") \
-	and Selection.getSelectedUnits().size() > 0 \
+	if Selection.getSelectedUnits().size() > 0 \
 	and Mode.MODE == 1:
-		print("Order._input got called")
-		_draw_point_and_line()
+		indicator.show()
+		if event.is_action_pressed("mouse_left_click"):
+			_draw_point_and_line()
 	
 	if event.is_action_pressed("mouse_right_click") \
 	and Selection.getSelectedUnits().size() > 0 \
 	and Mode.MODE == 1:
-		print("End of line-drawing mode")
+		indicator.hide()
 		Mode.endMode(1)
 
+func _process(delta) -> void:
+	if Mode.MODE == 1:
+		var mousePos = get_mouse_pos()
+		if mousePos:
+			indicator.global_position = mousePos
 
 # shows the orders menu at mouse position
 func showOrdersMenu(pos : Vector2):
@@ -93,6 +89,7 @@ func get_mouse_pos():
 
 func _draw_point_and_line()->void:
 	print("_draw_point_and_line() called")
+
 	if points.size() < 1:
 		# No points. Unit = starting point
 		prints("No points. Unit = starting point")
@@ -151,7 +148,8 @@ func point(pos: Vector3, radius : float = 1.0, color = Color.WHITE_SMOKE):
 	self.add_child(mesh_instance)
 	
 	return mesh_instance
-	
+
+
 ## @deprecated
 ## 1 -> Lasts ONLY for current physics frame
 ## >1 -> Lasts X time duration.
