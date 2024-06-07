@@ -39,8 +39,8 @@ func select(caller, event) -> void:
 		if event.button_index == 1 \
 		and not Input.is_key_pressed(KEY_CTRL) \
 		and not event.double_click:
-			print("input called on unit/unit-entity")
-			prints("Ground detected @ ", Order.getGroundAtCoordinates(caller.global_position))
+			#print("input called on unit/unit-entity")
+			#prints("Ground detected @ ", Order.getGroundAtCoordinates(caller.global_position))
 			var groups = caller.get_groups()
 			# if not SHIFT, then unselect other units and select this unit
 			if not Input.is_key_pressed(KEY_SHIFT):

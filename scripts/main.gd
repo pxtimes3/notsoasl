@@ -35,8 +35,7 @@ func _ready():
 	# removeSpawnAreas
 	get_node("player1_deploy").free()
 	get_node("player2_deploy").free()
-
-
+	
 	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
