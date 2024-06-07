@@ -18,8 +18,8 @@ func _ready():
 	#if int(c) % 50 == 0:
 		#prints("SelectedUnits: ",selectedUnits)
 
-func newUnitMarker(p := []):
-	print(p)
+#func newUnitMarker(p := []):
+	#print(p)
 
 
 ## Returns the currently selected units, if any.
@@ -78,7 +78,7 @@ func select(caller, event) -> void:
 			"""
 			Is CTRL pressed?
 			"""
-			print(caller.get_groups())
+			# print(caller.get_groups())
 			var addUnits : Array
 			if caller.UNITTYPE == "company-hq":
 				addUnits = get_tree().get_nodes_in_group("company-" + caller.COMPANY)
@@ -115,8 +115,10 @@ func multiUnitSelection(units : Array) -> void:
 	inputHandled()
 
 
-func unselect(caller, event, position):
-	pass
+func unselect(_params = []):
+	for n : UnitEntity in selectedUnits:
+		n.unSelectUnit()
+	selectedUnits.clear()
 
 func showMouseOver():
 	pass
@@ -128,9 +130,7 @@ func _unhandled_input(event):
 	if event is InputEventMouseButton \
 	and event.button_index == 1:
 	# TODO: Handle unselecting units by clicking anywhere else
-		print(event)
-		print(get_mouse_pos())
-		push_warning("Handle unselecting units by clicking anywhere else")
+		pass
 
 func get_mouse_pos():
 	var space_state = get_parent().get_world_3d().get_direct_space_state()

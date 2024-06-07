@@ -101,9 +101,7 @@ func calcZonePosition(player: String, z : int = 200, x : int = 50):
 	
 	return pos
 
-# move orders node
 func _on_ground_input_event(camera, event, click_position, click_normal, shape_idx):
-	if event is InputEventMouseButton and event.pressed:
-		$Marker.transform.origin = click_position
-		#$Player.target = click_position
-		print(click_position)
+	if event is InputEventMouseButton and Input.get_mouse_button_mask() == 1:
+		if Mode.MODE == 0:
+			Selection.unselect()
