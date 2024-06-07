@@ -3,6 +3,9 @@ extends Node
 signal openOrdersMenu
 signal ordersMenu
 
+var OrderWayPointScript = load("res://scripts/3d/gui/unit/orders/DragWayPoint.gd")
+var WayPointScene : PackedScene = load("res://scenes/3d/unit/OrderWaypoint.tscn")
+
 var orderColor : Dictionary = {
 	"order_move_patrol" : Color.AQUA,
 	"order_move_fast" : Color.WEB_PURPLE,
@@ -35,8 +38,11 @@ func _input(event: InputEvent) -> void:
 	and Mode.MODE == 1:
 		indicator.hide()
 		Mode.endMode(1)
-		# if Selection.selectedUnits.size() == 0:
-		#	points.clear()
+	
+	if event.is_action_pressed("order_delete_node") \
+	and Selection.getSelectedUnits().size() > 0:
+		deleteLastNode()
+
 
 func _process(delta) -> void:
 	if Mode.MODE == 1:
@@ -75,7 +81,7 @@ func performPhysicsQuery(space_state, ray_origin : Vector3, ray_end : Vector3):
 	var params = PhysicsRayQueryParameters3D.new()
 	params.from = ray_origin
 	params.to = ray_end
-	params.collision_mask = 1
+	#params.collision_mask = 1
 	params.exclude = []
 	params.collide_with_areas = true
 
@@ -139,7 +145,6 @@ func _drawWaypoints(unit : UnitEntity) -> void:
 		push_error("Points are not Vector3!")
 		breakpoint
 	
-	# paint it, paint it black!
 	var cbWayPoint = OrderWayPoint.new(point2, currentOrder)
 	var orderline = OrderLine.new(point1, point2, orderColor[currentOrder])
 		
@@ -149,5 +154,18 @@ func _drawWaypoints(unit : UnitEntity) -> void:
 
 ## Skickar över order/s till unit.
 func handOverOrderToUnit(unit : UnitEntity, mesh) -> void:
-	unit.get_node("Orders").add_child(mesh)
+	var unitOrderNode = unit.get_node("Orders")
+	unitOrderNode.add_child(mesh)
+	
 
+func deleteLastNode():
+	var selectedUnits = Selection.selectedUnits
+	for n : UnitEntity in selectedUnits:
+		var orders = n.get_node("Orders").get_children()
+		# sanitycheck
+		if orders.size() > 1:
+			orders[orders.size() - 1].free()
+			orders[orders.size() - 2].free()
+			var unitPoints : Array = points[n]
+			var unitPointToDelete : int = unitPoints.size() - 1
+			unitPoints.pop_back()
