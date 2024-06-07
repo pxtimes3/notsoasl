@@ -9,6 +9,10 @@ enum GAMESTATE {NORMAL, ORDER, TURN}
 
 
 func _process(delta: float) -> void:
+	if Selection.selectedUnits.size() > 0 and MODE == GAMESTATE.NORMAL:
+		#textTopMiddle.text = "SELECTEDUNIT"
+		pass
+		
 	if Selection.selectedUnits.size() == 0 and MODE == GAMESTATE.ORDER:
 		MODE = GAMESTATE.NORMAL
 		
