@@ -1,7 +1,7 @@
 [gd_scene load_steps=9 format=3 uid="uid://bjleatlgqd114"]
 
 [ext_resource type="Script" path="res://scripts/3d/unit/Unit.gd" id="1_alcf2"]
-[ext_resource type="PackedScene" path="res://scenes/3d/unit/UnitMarker.tscn" id="3_cicnl"]
+[ext_resource type="PackedScene" uid="uid://c5y1rfr0y7ipr" path="res://scenes/3d/unit/UnitMarker.tscn" id="3_cicnl"]
 [ext_resource type="Script" path="res://scripts/3d/unit/UnitMarker.gd" id="3_n5xyf"]
 [ext_resource type="Texture2D" uid="uid://bo0q72o54n0sp" path="res://assets/sprites/ui/backgrounds/ww34.jpg" id="5_ixogc"]
 
@@ -58,3 +58,5 @@ input_capture_on_drag = true
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="UnitMarker/Quad/Area3D"]
 shape = SubResource("BoxShape3D_mv3md")
+
+[node name="Orders" type="Node" parent="."]
