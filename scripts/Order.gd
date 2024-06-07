@@ -54,21 +54,10 @@ func getGroundAtCoordinates(coordinates : Vector3, mask : int = 1, RAY_LENGTH : 
 	var ray_end = Vector3(coordinates.x, RAY_LENGTH, coordinates.z)
 	# var end = Vector3(origin.x, RAY_LENGTH, origin.z)
 	#var query = PhysicsRayQueryParameters3D.create(origin, end, mask)
-	var params = PhysicsRayQueryParameters3D.new()
-	params.from = ray_origin
-	params.to = ray_end
-	params.collision_mask = 1
-	params.exclude = []
-	params.collide_with_areas = true
-
-	var rayDic = space_state.intersect_ray(params)	
-	
-	if rayDic.has("position"):
-		return rayDic["position"]
-	return null
+	return performPhysicsQuery(space_state, ray_origin, ray_end)
 
 
-#Returns the position in 3d that the mouse is hovering, or null if it isnt hovering anything
+## Returns the position in 3d that the mouse is hovering, or null if it isnt hovering anything
 func get_mouse_pos():
 	var space_state = get_parent().get_world_3d().get_direct_space_state()
 	var mouse_position = get_viewport().get_mouse_position()
@@ -77,12 +66,18 @@ func get_mouse_pos():
 	var ray_origin = camera.project_ray_origin(mouse_position)
 	var ray_end = ray_origin + camera.project_ray_normal(mouse_position) * 1000
 		
+	return performPhysicsQuery(space_state, ray_origin, ray_end)
+
+
+## Does the actual raycasting
+func performPhysicsQuery(space_state, ray_origin : Vector3, ray_end : Vector3):
 	var params = PhysicsRayQueryParameters3D.new()
 	params.from = ray_origin
 	params.to = ray_end
 	params.collision_mask = 1
 	params.exclude = []
-	
+	params.collide_with_areas = true
+
 	var rayDic = space_state.intersect_ray(params)	
 	
 	if rayDic.has("position"):
