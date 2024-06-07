@@ -3,8 +3,10 @@ class_name UnitEntity
 extends Node3D
 
 var unitEntityScene: PackedScene = load("res://scenes/3d/unit/Unit.tscn")
-var unitMarkerScene : PackedScene = load("res://scenes/3d/unit/UnitMarker.tscn")
 
+@onready var _unitMarker = $UnitMarker/SubViewport/Control
+
+@export var SELECTED : bool = false
 var UNITID : String = ""
 var UNITTYPE : String = ""
 var COMPANY : String = ""	# id of the company
@@ -44,3 +46,13 @@ func createUnitEntity(UnitID:String, UnitType:String, Company:String, Platoon:St
 
 func _ready():
 	pass
+
+func _toggleSelected() -> void:
+	if SELECTED == false:
+		SELECTED = true
+		_unitMarker.get_node("Unselected").hide()
+		_unitMarker.get_node("Selected").show()
+	else:
+		SELECTED = false
+		_unitMarker.get_node("Selected").hide()
+		_unitMarker.get_node("Unselected").show()

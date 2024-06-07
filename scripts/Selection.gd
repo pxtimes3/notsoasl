@@ -45,13 +45,16 @@ func select(caller, event) -> void:
 			# if not SHIFT, then unselect other units and select this unit
 			if not Input.is_key_pressed(KEY_SHIFT):
 				for x in selectedUnits.size():
-					get_tree().call_group(selectedUnits[x], "outline", 0)
+					selectedUnits[x]._toggleSelected()
+				selectedUnits = []
 				var squad = caller.SQUAD
 				get_tree().call_group("squad-" + caller.SQUAD, "outline", 1)
+				caller._toggleSelected()
 				# add this unit to selectedUnits
 				selectedUnits = [caller]
 			else:
 				get_tree().call_group("squad-" + caller.SQUAD, "outline", 1)
+				caller._toggleSelected()
 				# shift is pressed, appending to selectedUnitssquad
 				if caller not in selectedUnits:
 					selectedUnits.append(caller)
@@ -71,7 +74,8 @@ func select(caller, event) -> void:
 				var unitClass = n.get_class()
 				if unitClass != "CharacterBody3D" and n not in selectedUnits:
 					selectedUnits.append(n)
-		# print(selectedUnits)
+					n._toggleSelected()
+		print(selectedUnits)
 
 func unselect(caller, event, position):
 	pass

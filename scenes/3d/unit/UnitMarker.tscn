@@ -1,91 +1,10 @@
-[gd_scene load_steps=8 format=3 uid="uid://c5y1rfr0y7ipr"]
+[gd_scene load_steps=6 format=3 uid="uid://c5y1rfr0y7ipr"]
 
 [ext_resource type="Texture2D" uid="uid://bpiy43foqvqvs" path="res://assets/sprites/ui/unit/icon-ak47-48x48.svg" id="1_hn1p6"]
+[ext_resource type="Texture2D" uid="uid://cfvoyqk33k2t" path="res://assets/sprites/ui/unit/icon-ak47-48x48-selected.svg" id="2_5i5ol"]
 [ext_resource type="FontFile" uid="uid://cb86ktsh83ekv" path="res://assets/fonts/Pixellari.ttf" id="2_pxvia"]
 
-[sub_resource type="GDScript" id="GDScript_fe3pf"]
-script/source = "extends Control
-
-
-# Called when the node enters the scene tree for the first time.
-func _ready():
-	pass # Replace with function body.
-
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-	pass
-
-
-func _on_gui_input(event):
-	Selection.newUnitMarker([\"UnitMarker.gd \", event])
-	pass # Replace with function body.
-
-
-func _on_mouse_entered():
-	print(\"entered\")
-	pass # Replace with function body.
-
-
-func _on_mouse_exited():
-	print(\"exited!\")
-	pass # Replace with function body.
-"
-
-[sub_resource type="GDScript" id="GDScript_ueyn6"]
-script/source = "extends TextureRect
-
-
-# Called when the node enters the scene tree for the first time.
-func _ready():
-	pass # Replace with function body.
-
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-	pass
-
-
-func _on_mouse_exited():
-	print(\"TextureRect mouse exited!\")
-	pass # Replace with function body.
-
-
-func _on_mouse_entered():
-	print(\"TextureRect mouse entered!\")
-	pass # Replace with function body.
-
-
-func _on_gui_input(event):
-	print(\"TextureRect inputevent!\")
-	pass # Replace with function body.
-"
-
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_qhlg1"]
-
-[sub_resource type="GDScript" id="GDScript_jgr2k"]
-script/source = "extends TextureButton
-
-
-# Called when the node enters the scene tree for the first time.
-func _ready():
-	pass # Replace with function body.
-
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-	pass
-
-
-func _on_button_down():
-	Selection.newUnitMarker([\"BUTTON DOWN!\"])
-	pass # Replace with function body.
-
-
-func _on_button_up():
-	Selection.newUnitMarker([\"BUTTON UP!\"])
-	pass # Replace with function body.
-"
 
 [sub_resource type="LabelSettings" id="LabelSettings_ntcda"]
 line_spacing = -3.0
@@ -101,25 +20,29 @@ layout_mode = 3
 anchors_preset = 0
 offset_right = 49.0
 offset_bottom = 48.0
-script = SubResource("GDScript_fe3pf")
 
-[node name="TextureRect" type="TextureRect" parent="."]
-visible = false
+[node name="Unselected" type="TextureRect" parent="."]
 layout_mode = 0
 offset_right = 48.0
 offset_bottom = 48.0
 texture = ExtResource("1_hn1p6")
 expand_mode = 2
-script = SubResource("GDScript_ueyn6")
+
+[node name="Selected" type="TextureRect" parent="."]
+visible = false
+layout_mode = 0
+offset_right = 48.0
+offset_bottom = 48.0
+texture = ExtResource("2_5i5ol")
+expand_mode = 2
 
 [node name="TextureButton" type="TextureButton" parent="."]
+visible = false
 material = SubResource("CanvasItemMaterial_qhlg1")
 layout_mode = 0
 offset_right = 48.0
 offset_bottom = 48.0
 texture_normal = ExtResource("1_hn1p6")
-texture_pressed = ExtResource("1_hn1p6")
-script = SubResource("GDScript_jgr2k")
 
 [node name="Company" type="Label" parent="."]
 layout_mode = 0
@@ -146,8 +69,11 @@ uppercase = true
 [connection signal="gui_input" from="." to="." method="_on_gui_input"]
 [connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]
-[connection signal="gui_input" from="TextureRect" to="TextureRect" method="_on_gui_input"]
-[connection signal="mouse_entered" from="TextureRect" to="TextureRect" method="_on_mouse_entered"]
-[connection signal="mouse_exited" from="TextureRect" to="TextureRect" method="_on_mouse_exited"]
+[connection signal="gui_input" from="Unselected" to="Unselected" method="_on_gui_input"]
+[connection signal="mouse_entered" from="Unselected" to="Unselected" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="Unselected" to="Unselected" method="_on_mouse_exited"]
+[connection signal="gui_input" from="Selected" to="Selected" method="_on_gui_input"]
+[connection signal="mouse_entered" from="Selected" to="Selected" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="Selected" to="Selected" method="_on_mouse_exited"]
 [connection signal="button_down" from="TextureButton" to="TextureButton" method="_on_button_down"]
 [connection signal="button_up" from="TextureButton" to="TextureButton" method="_on_button_up"]
