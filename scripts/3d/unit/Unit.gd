@@ -54,17 +54,33 @@ func _toggleSelected() -> void:
 		SELECTED = true
 		_unitMarker.get_node("Unselected").hide()
 		_unitMarker.get_node("Selected").show()
+		ordersVisibility(1)
 	else:
 		SELECTED = false
 		_unitMarker.get_node("Selected").hide()
 		_unitMarker.get_node("Unselected").show()
+		ordersVisibility(0)
 
 func selectUnit() -> void:
 	SELECTED = true
 	_unitMarker.get_node("Unselected").hide()
 	_unitMarker.get_node("Selected").show()
+	ordersVisibility(1)
 	
 func unSelectUnit() -> void:
 	SELECTED = false
 	_unitMarker.get_node("Unselected").show()
 	_unitMarker.get_node("Selected").hide()
+	ordersVisibility(0)
+
+func ordersVisibility(state : int):
+	#pass
+	var orders = self.get_node("Orders")
+	if orders != null and orders.get_child_count():
+		var children = orders.get_children()
+		if state == 0:
+			for n in children:
+				n.hide()
+		else:
+			for n in children:
+				n.show()
