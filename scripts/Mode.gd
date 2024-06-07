@@ -1,27 +1,39 @@
 extends Node
 
 enum GAMESTATE {NORMAL, ORDER, TURN}
-@export var MODE = GAMESTATE.NORMAL
 
+@export var MODE = GAMESTATE.NORMAL
+@export var CURRENTORDER : String = ""
 @onready var textTopMiddle = get_node("/root/main/GameUi/TopMiddle/MarginContainer/Text")
 
-func _unhandled_key_input(event):
-	if Input.is_action_pressed("order_patrol"):
-		print (event)
-# Called when the node enters the scene tree for the first time.
-#func _ready() -> void:
-	#pass # Replace with function body.
-#
-#
-# Called every frame. 'delta' is the elapsed time since the previous frame.
+
+
 func _process(delta: float) -> void:
 	if Selection.selectedUnits.size() == 0 and MODE == GAMESTATE.ORDER:
 		MODE = GAMESTATE.NORMAL
 		
-	if Input.is_action_pressed("order_patrol") and Selection.selectedUnits.size() > 0:
+	if Input.is_action_pressed("order_move_patrol") and Selection.selectedUnits.size() > 0:
 		MODE = GAMESTATE.ORDER
+		CURRENTORDER = "order_move_patrol"
 		textTopMiddle.text = "ORDERDRAWLINE"
+		
+	if Input.is_action_pressed("order_move_fast") and Selection.selectedUnits.size() > 0:
+		MODE = GAMESTATE.ORDER
+		CURRENTORDER = "order_move_fast"
+		textTopMiddle.text = "ORDERDRAWLINE"
+		
+	if Input.is_action_pressed("order_move_assault") and Selection.selectedUnits.size() > 0:
+		MODE = GAMESTATE.ORDER
+		CURRENTORDER = "order_move_assault"
+		textTopMiddle.text = "ORDERDRAWLINE"
+		
+	if Input.is_action_pressed("order_move_crawl") and Selection.selectedUnits.size() > 0:
+		MODE = GAMESTATE.ORDER
+		CURRENTORDER = "order_move_crawl"
+		textTopMiddle.text = "ORDERDRAWLINE"
+
 
 func endMode(mode : GAMESTATE) -> void:
 	textTopMiddle.text = ""
 	MODE = GAMESTATE.NORMAL
+	CURRENTORDER = ""
