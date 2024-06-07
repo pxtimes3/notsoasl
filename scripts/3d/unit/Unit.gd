@@ -7,16 +7,16 @@ var unitEntityScene: PackedScene = load("res://scenes/3d/unit/Unit.tscn")
 @onready var _unitMarker = $UnitMarker/SubViewport/Control
 
 @export var SELECTED : bool = false
-var UNITID : String = ""
-var UNITTYPE : String = ""
-var COMPANY : String = ""	# id of the company
-var PLATOON : String = ""	# id of the platoon
-var SQUAD : String = ""		# id of squad
-var PLAYER : String = ""
-var UNITEQUIPMENT : Dictionary = {
+@export var UNITID : String = ""
+@export var UNITTYPE : String = ""
+@export var COMPANY : String = ""	# id of the company
+@export var PLATOON : String = ""	# id of the platoon
+@export var SQUAD : String = ""		# id of squad
+@export var PLAYER : String = ""
+@export var UNITEQUIPMENT : Dictionary = {
 	"radio" : false,
 }
-var UNITORDERS : Array = [
+@export var UNITORDERS : Array = [
 	## Acts as a stack in order to put unit-initiated actions on top.
 	## Once consumed the first order is popped off the top of the array.
 	## Consumation of the order happens when all entities have arrived in the 
@@ -39,8 +39,10 @@ func createUnitEntity(UnitID:String, UnitType:String, Company:String, Platoon:St
 	
 	add_to_group("unit-"+UNITID)
 	add_to_group("company-"+COMPANY)
-	add_to_group("platoon-"+PLATOON)
-	add_to_group("squad"+SQUAD)
+	if Platoon.length() > 0:
+		add_to_group("platoon-"+PLATOON)
+	if Squad.length() > 0:
+		add_to_group("squad"+SQUAD)
 	
 	return self
 
@@ -56,3 +58,13 @@ func _toggleSelected() -> void:
 		SELECTED = false
 		_unitMarker.get_node("Selected").hide()
 		_unitMarker.get_node("Unselected").show()
+
+func selectUnit() -> void:
+	SELECTED = true
+	_unitMarker.get_node("Unselected").hide()
+	_unitMarker.get_node("Selected").show()
+	
+func unSelectUnit() -> void:
+	SELECTED = false
+	_unitMarker.get_node("Unselected").show()
+	_unitMarker.get_node("Selected").hide()
