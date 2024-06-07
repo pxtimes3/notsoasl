@@ -44,7 +44,6 @@ script = ExtResource("3_n5xyf")
 size = Vector2i(48, 48)
 
 [node name="Control" parent="UnitMarker/SubViewport" instance=ExtResource("3_cicnl")]
-script = null
 
 [node name="Quad" type="MeshInstance3D" parent="UnitMarker"]
 cast_shadow = 0
