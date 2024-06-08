@@ -1,4 +1,6 @@
-[gd_scene load_steps=5 format=3 uid="uid://ba5hmlo5tdrwy"]
+[gd_scene load_steps=6 format=3 uid="uid://ba5hmlo5tdrwy"]
+
+[ext_resource type="Script" path="res://scripts/2d/gui/game/gameUI.gd" id="1_0m45h"]
 
 [sub_resource type="Theme" id="Theme_388p8"]
 
@@ -20,6 +22,7 @@ grow_vertical = 2
 size_flags_horizontal = 4
 size_flags_vertical = 0
 mouse_filter = 2
+script = ExtResource("1_0m45h")
 
 [node name="TopMiddle" type="Control" parent="."]
 custom_minimum_size = Vector2(0, 60)
@@ -82,8 +85,17 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Button" type="Button" parent="Bottom/Panel/HBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="Bottom/Panel/HBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 10
+
+[node name="StartTurn" type="Button" parent="Bottom/Panel/HBoxContainer/MarginContainer"]
 layout_mode = 2
 theme = SubResource("Theme_rxqto")
 theme_override_constants/outline_size = 0
 text = "Start Turn"
+
+[connection signal="button_up" from="Bottom/Panel/HBoxContainer/MarginContainer/StartTurn" to="." method="_on_start_turn_button_up"]
