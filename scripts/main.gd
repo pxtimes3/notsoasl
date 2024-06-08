@@ -20,6 +20,8 @@ var currentDefinitions = {}
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	## signals
+	PubSub.executeTurn.connect(executeTurn)
 	# load params
 	#missionparams = $MissionSelector.missionsDict
 	processParams(JSON.parse_string(FileAccess.get_file_as_string(missionpath + "parameters.json")))
@@ -54,6 +56,7 @@ func getNumUnitsInScene() -> int:
 	return unitCount
 	
 func executeTurn():
+	prints("Turn executing!")
 	# execute turn
 		# process each "order" async
 		# timer 60s
