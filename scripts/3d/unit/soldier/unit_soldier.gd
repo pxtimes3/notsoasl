@@ -1,6 +1,6 @@
 extends CharacterBody3D
 
-@export var fall_acceleration = 75
+@export var fall_acceleration = 75000
 
 signal openOrdersMenu(location)
 
@@ -25,7 +25,8 @@ func _physics_process(delta: float) -> void:
 	var direction = Vector3.ZERO
 	if not is_on_floor(): # If in the air, fall towards the floor. Literally gravity
 		target_velocity.y = target_velocity.y - (fall_acceleration * delta)
-
+	else: 
+		PubSub.onFloor.emit(self, CONNECT_ONE_SHOT)
 	# Moving the Character
 	velocity = target_velocity
 	move_and_slide()
