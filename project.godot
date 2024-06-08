@@ -22,6 +22,8 @@ Order="*res://scripts/Order.gd"
 Selection="*res://scripts/Selection.gd"
 MissionParameters="*res://scripts/MissionParameters.gd"
 Unit="*res://scripts/Unit.gd"
+PubSub="*res://scripts/Autoload/PubSub.gd"
+V3Helper="*res://scripts/Autoload/Vector3Helper.gd"
 
 [editor]
 
