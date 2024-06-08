@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://bjleatlgqd114"]
+[gd_scene load_steps=10 format=3 uid="uid://bjleatlgqd114"]
 
 [ext_resource type="Script" path="res://scripts/3d/unit/Unit.gd" id="1_alcf2"]
 [ext_resource type="PackedScene" uid="uid://c5y1rfr0y7ipr" path="res://scenes/3d/unit/UnitMarker.tscn" id="3_cicnl"]
@@ -22,6 +22,8 @@ billboard_keep_scale = true
 [sub_resource type="BoxShape3D" id="BoxShape3D_mv3md"]
 resource_local_to_scene = true
 size = Vector3(8, 8, 8)
+
+[sub_resource type="BoxMesh" id="BoxMesh_i3ddy"]
 
 [node name="Unit" type="Node3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.635904, 0)
@@ -59,3 +61,7 @@ input_capture_on_drag = true
 shape = SubResource("BoxShape3D_mv3md")
 
 [node name="Orders" type="Node" parent="."]
+
+[node name="Middle" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -3.14165, 0)
+mesh = SubResource("BoxMesh_i3ddy")

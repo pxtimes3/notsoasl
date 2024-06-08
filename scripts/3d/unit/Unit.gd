@@ -47,7 +47,50 @@ func createUnitEntity(UnitID:String, UnitType:String, Company:String, Platoon:St
 	return self
 
 func _ready():
+	await getEntityPositions()
+
+func executeTurn():
 	pass
+
+## Conforms the unit "container" to encompass all it's entities
+func conformToEntities():
+	pass
+
+func findInVector3Array(needle : float, haystack : Array, dimension = null):
+	for n in haystack:
+		if dimension != null:
+			if n[dimension] == needle:
+				return n
+		else:
+			if n.x == needle:
+				return n
+			if n.y == needle:
+				return n
+			if n.z == needle:
+				return n
+
+func getEntityPositions():
+	var entitiesXYZ := []
+	var entitiesX := []
+	var entitiesZ := []
+	var entities = get_children().filter(
+		func(unit):
+			return unit.get_class() == "CharacterBody3D"
+	)
+	
+	for n : CharacterBody3D in entities:
+		await PubSub.onFloor
+		var position = n.position
+		entitiesXYZ.append(n.position)
+		entitiesX.append(n.position.x)
+		entitiesZ.append(n.position.z)
+		
+	var middle = Vector3.ZERO
+	middle.x = (V3Helper.sortV3Array(entitiesXYZ, 1, 1).x - V3Helper.sortV3Array(entitiesXYZ, 2, 1).x) / 2
+	middle.y = -7
+	middle.z = (V3Helper.sortV3Array(entitiesXYZ, 5, 1).z - V3Helper.sortV3Array(entitiesXYZ, 6, 1).z) / 2
+	var middleNode = get_node("Middle")
+	middleNode.position = middle
 
 func _toggleSelected() -> void:
 	if SELECTED == false:
