@@ -56,19 +56,6 @@ func executeTurn():
 func conformToEntities():
 	pass
 
-func findInVector3Array(needle : float, haystack : Array, dimension = null):
-	for n in haystack:
-		if dimension != null:
-			if n[dimension] == needle:
-				return n
-		else:
-			if n.x == needle:
-				return n
-			if n.y == needle:
-				return n
-			if n.z == needle:
-				return n
-
 func getEntityPositions():
 	var entitiesXYZ := []
 	var entitiesX := []

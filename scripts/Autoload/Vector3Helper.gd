@@ -1,25 +1,28 @@
 extends Node
 
-var exempelArray = [
-	Vector3(-0.226036, -7.94061, 0.327271), 
-	Vector3(1.668816, -7.940611, 0.308273), 
-	Vector3(3.533463, -7.94061, 0.655502), 
-	Vector3(5.651474, -7.94061, 0.52037), 
-	Vector3(-0.43502, -8.02189, -1.296158), 
-	Vector3(1.952843, -8.103167, -1.58696), 
-	Vector3(4.223106, -8.021889, -1.166443), 
-	Vector3(5.867729, -8.021889, -1.463135), 
-	Vector3(0.323311, -8.184444, -3.437378), 
-	Vector3(1.840179, -8.184446, -3.326172), 
-	Vector3(3.797401, -8.184446, -3.097382), 
-	Vector3(6.479355, -8.184445, -3.344788)
-]
-
-## Sorts an array with Vector3s by directions
 enum DIR {
 	XMAX = 1, XMIN = 2, ZMAX = 3, ZMIN = 4, YMAX = 5, YMIN = 6
 }
 
+
+## Looks for needle in a haystack filled with Vector3
+#
+func findInVector3Array(needle : float, haystack : Array, dimension = null):
+	for n in haystack:
+		if dimension != null:
+			if n[dimension] == needle:
+				return n
+		else:
+			if n.x == needle:
+				return n
+			if n.y == needle:
+				return n
+			if n.z == needle:
+				return n
+
+
+## Sorts an array with Vector3s by directions
+#
 func sortV3Array(array : Array, direction : DIR, num : int = 0, y : int = 0):
 	if direction == DIR.XMAX:
 		array.sort_custom(func(a, b): return a.x > b.x)
