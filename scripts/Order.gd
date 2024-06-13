@@ -81,7 +81,7 @@ func performPhysicsQuery(space_state, ray_origin : Vector3, ray_end : Vector3):
 	var params = PhysicsRayQueryParameters3D.new()
 	params.from = ray_origin
 	params.to = ray_end
-	#params.collision_mask = 1
+	params.collision_mask = 1
 	params.exclude = []
 	params.collide_with_areas = true
 
@@ -132,7 +132,9 @@ func _drawWaypoints(unit : UnitEntity) -> void:
 	
 	if points[unit].size() < 1:
 		points[unit].append(getGroundAtCoordinates(unit.global_position)) # add selected unit
-		point1 = points[unit][0] # assign unit position as point1
+		var unitMiddle = await unit.getUnitMiddle() # assign unit position as point1
+		var unitPosition = getGroundAtCoordinates(unit.global_position)
+		point1 = Vector3(unitPosition.x - unitMiddle.x, unitPosition.y, unitPosition.z - unitMiddle.y)
 		point2 = offset + Vector3(get_mouse_pos()) # mouse position is point2
 		points[unit].append(point2) 
 	elif points[unit].size() > 1:
@@ -150,13 +152,15 @@ func _drawWaypoints(unit : UnitEntity) -> void:
 		
 	handOverOrderToUnit(unit, orderline)
 	handOverOrderToUnit(unit, cbWayPoint)
+	# send to Unit for distribution to it's entities.
+	unit.forwardOrderToEntities([cbWayPoint.order, cbWayPoint.global_position])
 
 
 ## Skickar över order/s till unit.
 func handOverOrderToUnit(unit : UnitEntity, mesh) -> void:
 	var unitOrderNode = unit.get_node("Orders")
 	unitOrderNode.add_child(mesh)
-	
+
 
 func deleteLastNode():
 	var selectedUnits = Selection.selectedUnits
