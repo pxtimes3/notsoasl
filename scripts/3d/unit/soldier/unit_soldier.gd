@@ -55,6 +55,15 @@ func outline(on):
 	else:
 		$"Pivot/unit-soldier-blue/OutlineMesh".hide()
 
+## Recieves the units orders and adds to the unit-soldier to calculate when 
+## an order is completed by the individual entity. Ie. entity has reached the 5m
+## zone around their calculated end position. Also for debugging purposes.
+##
+## @param order = Dictionary in the form of {"move" : "destination as Vector3"}
+func recieveOrder(order : Array) -> void:
+	#prints(self, "got order", order)
+	pass
+
 func setSelected(value : bool):
 	SELECTED = value
 

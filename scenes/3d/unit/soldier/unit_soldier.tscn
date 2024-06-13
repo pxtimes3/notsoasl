@@ -44,6 +44,8 @@ surface_material_override/0 = SubResource("StandardMaterial3D_ladpw")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00341797, 0.767704, 0.0067749)
 shape = SubResource("BoxShape3D_jdsjg")
 
+[node name="Debug" type="Node" parent="."]
+
 [connection signal="input_event" from="." to="." method="_on_input_event"]
 [connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]

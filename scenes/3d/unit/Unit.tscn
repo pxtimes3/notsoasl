@@ -46,8 +46,11 @@ script = ExtResource("3_n5xyf")
 size = Vector2i(48, 48)
 
 [node name="Control" parent="UnitMarker/SubViewport" instance=ExtResource("3_cicnl")]
+size_flags_horizontal = 3
+size_flags_vertical = 3
 
 [node name="Quad" type="MeshInstance3D" parent="UnitMarker"]
+visible = false
 cast_shadow = 0
 mesh = SubResource("QuadMesh_xlmle")
 skeleton = NodePath("../..")
@@ -64,4 +67,5 @@ shape = SubResource("BoxShape3D_mv3md")
 
 [node name="Middle" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -3.14165, 0)
+visible = false
 mesh = SubResource("BoxMesh_i3ddy")

@@ -6,3 +6,4 @@ signal executeTurn(turn : int)
 
 ### UNIT_SOLDIER
 signal onFloor(entity : CharacterBody3D)
+signal Orders
