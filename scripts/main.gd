@@ -13,6 +13,7 @@ var mapSize := []
 var _player : int = 0
 
  #debug variables
+var unitEntityCount := {"units": 0, "entities": 0}
 var unitsCreated = 0
 var missionUnits : Dictionary = {}
 var definitions = ""
@@ -37,23 +38,29 @@ func _ready():
 	# removeSpawnAreas
 	get_node("player1_deploy").free()
 	get_node("player2_deploy").free()
+	unitEntityCount = getNumUnitsInScene()
 	
 	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	$Node2D/Control/VBoxContainer/fps.text = str("FPS: ", "%.0f" % (1.0 / delta))
-	$Node2D/Control/VBoxContainer/unitsInScene.text = str("Units in scene ", "%.0f" % (getNumUnitsInScene()))
+	$Node2D/Control/VBoxContainer/unitsInScene.text = str("Units in scene ", "%.0f" % (unitEntityCount.units), ", entities ", "%.0f" % (unitEntityCount.entities))
 	$Node2D/Control/VBoxContainer/mode.text = str("Mode ", "%s" % (Mode.MODE))
 	#Debug.log("Selected units: ", getSelectedUnits())
 	pass
 	
-func getNumUnitsInScene() -> int:
+func getNumUnitsInScene() -> Dictionary:
 	var unitCount = 0
+	var entityCount = 0
 	var units = get_node("Units").get_children(true)
 	for i in units:
 		unitCount += 1
-		unitCount += get_child_count()
-	return unitCount
+		var unitChildren = i.get_children()
+		for n in unitChildren:
+			if n.is_class("CharacterBody3D"):
+				entityCount += 1
+		
+	return {"units": unitCount, "entities": entityCount}
 	
 func executeTurn():
 	prints("Turn executing!")
