@@ -5,7 +5,7 @@ extends Node3D
 var unitEntityScene: PackedScene = load("res://scenes/3d/unit/Unit.tscn")
 
 @onready var _unitMarker = $UnitMarker/SubViewport/Control
-
+@export var unitMiddle = Vector3.UP
 @export var SELECTED : bool = false
 @export var UNITID : String = ""
 @export var UNITTYPE : String = ""
@@ -47,37 +47,41 @@ func createUnitEntity(UnitID:String, UnitType:String, Company:String, Platoon:St
 	return self
 
 func _ready():
-	await getEntityPositions()
-
+	unitMiddle = await getUnitMiddle()
+	$UnitMarker.position.x = unitMiddle.x
+	$UnitMarker.position.z = unitMiddle.y
+	
+func _process(delta):
+	pass
+	
 func executeTurn():
 	pass
 
+## @deprecated
 ## Conforms the unit "container" to encompass all it's entities
 func conformToEntities():
 	pass
+	
+	
+func forwardOrderToEntities(order : Array) -> void:
+	var entities = get_children().filter(func(unit): return unit.get_class() == "CharacterBody3D")
+	for n in entities:
+		n.recieveOrder(order)
 
-func getEntityPositions():
+var previousZ
+func getUnitMiddle():
 	var entitiesXYZ := []
+	var entitiesXZ := []
 	var entitiesX := []
 	var entitiesZ := []
-	var entities = get_children().filter(
-		func(unit):
-			return unit.get_class() == "CharacterBody3D"
-	)
+	var entities = get_children().filter(func(unit): return unit.get_class() == "CharacterBody3D")
 	
 	for n : CharacterBody3D in entities:
 		await PubSub.onFloor
-		var position = n.position
-		entitiesXYZ.append(n.position)
-		entitiesX.append(n.position.x)
-		entitiesZ.append(n.position.z)
-		
-	var middle = Vector3.ZERO
-	middle.x = (V3Helper.sortV3Array(entitiesXYZ, 1, 1).x - V3Helper.sortV3Array(entitiesXYZ, 2, 1).x) / 2
-	middle.y = -7
-	middle.z = (V3Helper.sortV3Array(entitiesXYZ, 5, 1).z - V3Helper.sortV3Array(entitiesXYZ, 6, 1).z) / 2
-	var middleNode = get_node("Middle")
-	middleNode.position = middle
+		entitiesXZ.append(Vector2(n.position.x, n.position.z))
+
+	return V3Helper.compute2DPolygonCentroid(entitiesXZ)
+	
 
 func _toggleSelected() -> void:
 	if SELECTED == false:
