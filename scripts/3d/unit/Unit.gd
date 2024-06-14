@@ -3,6 +3,7 @@ class_name UnitEntity
 extends Node3D
 
 var unitEntityScene: PackedScene = load("res://scenes/3d/unit/Unit.tscn")
+var centroid = Centroid.new()
 
 @onready var _unitMarker = $UnitMarker/SubViewport/Control
 @export var unitMiddle = Vector3.UP
@@ -27,6 +28,9 @@ var unitEntityScene: PackedScene = load("res://scenes/3d/unit/Unit.tscn")
 	## {"patrol" : "pos Vector3"}
 ]
 
+func yell(message):
+	prints(message)
+
 func createUnitEntity(UnitID:String, UnitType:String, Company:String, Platoon:String, Squad:String, Player: String, UnitEquipment:Dictionary) -> UnitEntity:
 	# var new_unitEntity = unitEntityScene.instantiate()
 	self.UNITID = UnitID
@@ -47,12 +51,13 @@ func createUnitEntity(UnitID:String, UnitType:String, Company:String, Platoon:St
 	return self
 
 func _ready():
-	unitMiddle = await getUnitMiddle()
-	$UnitMarker.position.x = unitMiddle.x
-	$UnitMarker.position.z = unitMiddle.y
+	pass
 	
 func _process(delta):
-	pass
+	if Engine.get_process_frames() % 300 == 0:
+		var repCenter = centroid.calculate_centroid(getUnitEntityPositions())
+		$UnitMarker.position.x = repCenter.x
+		$UnitMarker.position.z = repCenter.y
 	
 func executeTurn():
 	pass
@@ -68,19 +73,14 @@ func forwardOrderToEntities(order : Array) -> void:
 	for n in entities:
 		n.recieveOrder(order)
 
-var previousZ
-func getUnitMiddle():
-	var entitiesXYZ := []
+func getUnitEntityPositions() -> Array:
 	var entitiesXZ := []
-	var entitiesX := []
-	var entitiesZ := []
 	var entities = get_children().filter(func(unit): return unit.get_class() == "CharacterBody3D")
 	
 	for n : CharacterBody3D in entities:
-		await PubSub.onFloor
 		entitiesXZ.append(Vector2(n.position.x, n.position.z))
 
-	return V3Helper.compute2DPolygonCentroid(entitiesXZ)
+	return entitiesXZ
 	
 
 func _toggleSelected() -> void:
