@@ -2,8 +2,7 @@ extends CharacterBody3D
 
 @export var fall_acceleration = 75000
 
-signal openOrdersMenu(location)
-
+var _mouse_input_received := false
 var target_velocity = Vector3.ZERO
 
 var PLAYER: String # player controllable
@@ -31,24 +30,26 @@ func _physics_process(delta: float) -> void:
 	velocity = target_velocity
 	move_and_slide()
 
-func _on_input_event(camera, event, position, normal, shape_idx):
-	if event is InputEventMouseButton:
-		if event.button_index == 1:
-			# selection
-			var unit = self.get_parent_node_3d()
-			Selection.select(unit, event)
-		elif event.button_index == 2:
-			# open order menu
-			print("Open the menu!")
-			Order.showOrdersMenu(event.global_position)
-			pass
 
-func initialize():
-	# pos.y = 0.0
-	# self.add_to_group(UNIT["unit"])
-	# look_at_from_position(pos, Vector3.UP)
-	pass
+func try_mouse_input(caller: Node, camera: Node, event: InputEvent, input_position: Vector3, normal: Vector3) -> bool:
+	prints(caller)
+	if event.button_mask != 0:
+		# get unit
+		var unit = self.get_parent_node_3d()
+		if event.button_mask == 1:
+			_mouse_input_received = true
+			PubSub.unit_input_left_click.emit(unit, event)
+		elif event.button_mask == 2:
+			_mouse_input_received = true
+			PubSub.unit_input_right_click.emit(unit, event)
 
+	return false
+
+
+func setSelected(value : bool):
+	SELECTED = value
+	
+	
 func outline(on):
 	if on == 1 and not $"Pivot/unit-soldier-blue/OutlineMesh".is_visible():
 		$"Pivot/unit-soldier-blue/OutlineMesh".show()
@@ -64,23 +65,3 @@ func recieveOrder(order : Array) -> void:
 	#prints(self, "got order", order)
 	pass
 
-func setSelected(value : bool):
-	SELECTED = value
-
-func _unhandled_input(event: InputEvent) -> void:
-	# Selection.unselect(self, event, position)
-	if event is InputEventMouseButton \
-	and Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
-		if SELECTED == true \
-		and not Input.is_key_pressed(KEY_SHIFT) \
-		and Mode.MODE != "order":
-			if mouse_exited and $"Pivot/unit-soldier-blue/OutlineMesh".is_visible():
-				get_tree().call_group("unit", "outline", 0)
-				SELECTED = false
-
-
-func _on_mouse_entered():
-	Selection.showMouseOver()
-
-func _on_mouse_exited():
-	Selection.hideMouseOver() # Replace with function body.
