@@ -34,7 +34,7 @@ func select(caller : UnitEntity, event : InputEvent, button : int) -> void:
 	if button == 1 \
 	and not Input.is_key_pressed(KEY_CTRL) \
 	and not event.double_click:
-		var groups = caller.get_groups()
+		var _groups = caller.get_groups()
 		# if not SHIFT, then unselect other units and select this unit
 		if not Input.is_key_pressed(KEY_SHIFT):
 			# unselect everyone else
@@ -67,7 +67,7 @@ func select(caller : UnitEntity, event : InputEvent, button : int) -> void:
 			addUnits = get_tree().get_nodes_in_group("company-" + caller.COMPANY)
 		else:
 			addUnits = get_tree().get_nodes_in_group("platoon-" + caller.PLATOON)
-		var unitsToSelect : Array
+		var unitsToSelect : Array = []
 		for n in addUnits:
 			# sortera bort allt som inte är units
 			var unitClass = n.get_class()
@@ -76,7 +76,7 @@ func select(caller : UnitEntity, event : InputEvent, button : int) -> void:
 		
 		multiUnitSelection(unitsToSelect)
 	
-	prints("selectedUnits:", selectedUnits)
+	Log.debug(self, "selectedUnits:" + Log.array_to_string(selectedUnits))
 
 
 ## Handles the selection of multiple units when CTRL/CTRL+SHIFT is pressed[br]

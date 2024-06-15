@@ -14,7 +14,7 @@ func _ready():
 	# Get the target node from the node path
 	target = get_node(target_path)
 
-func _process(delta):
+func _process(_delta):
 	target = get_node(target_path)
 	if target:
 		# Get the camera node
@@ -31,5 +31,5 @@ func _process(delta):
 			# Set the position of the 2D object to the screen position
 			self.global_position = screen_pos
 
-func _handle_click(sprite : Sprite2D, event : InputEvent):
+func _handle_click(event : InputEvent):
 	PubSub.unit_input_left_click.emit(self.get_parent(), event)

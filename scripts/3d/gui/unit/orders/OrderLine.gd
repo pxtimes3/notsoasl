@@ -6,7 +6,7 @@ extends MeshInstance3D
 #@export var wpStart : Node3D
 #@export var wpEnd : Node3D
 
-func _init(from : Vector3, to : Vector3, color : Color, wpStart = "", wpEnd = "") -> void:
+func _init(from : Vector3, to : Vector3, color : Color, _wpStart = "", _wpEnd = "") -> void:
 	var length = (from-to).length()
 	var radius := 0.4
 	var line := CylinderMesh.new()

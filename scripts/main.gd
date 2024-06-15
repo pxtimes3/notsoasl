@@ -1,8 +1,5 @@
 extends Node3D 
 
-@export var _parametersPath = ""
-@export var _missionUnitsPath = ""
-@export var _typePath = ""
 @export var speed = 1
 
 @export var missionpath : String = "res://resources/missions/basicmission/" # missionpath as reported by MainMenu
@@ -11,7 +8,6 @@ extends Node3D
 # var missionparams = missionSelector.loadMissions()
 @export var missionParams = {}
 @export var mapSize := []
-@export var _player : int = 0
 
 @onready var currentStateControl = get_node("Control")
 @onready var currentStateNode    = get_node("Control/Y/SubViewport/X/SubViewport/CurrentState")
@@ -25,15 +21,17 @@ var currentDefinitions = {}
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	var start = Time.get_ticks_msec()
 	# subscribe to signals
 	PubSub.executeTurn.connect(executeTurn.bind())
 	PubSub.turnPlayStart.connect(playTurnStart.bind())
 	# load params
 	#missionparams = $MissionSelector.missionsDict
-	var start = Time.get_ticks_msec()
-	
 	processParams(JSON.parse_string(FileAccess.get_file_as_string(missionpath + "parameters.json")))
 	prints("Processing mission parameters", Time.get_ticks_msec() - start)
+	
+	# save params to usr://tmp/epoch-missionname
+	saveUsrGameData()
 	
 	self.global_position = Vector3(mapSize[1] / 2,0,mapSize[0] / 2)
 	prints("Placing maps", Time.get_ticks_msec() - start)
@@ -43,7 +41,7 @@ func _ready():
 	createSpawnAreas()
 	prints("Placing start areas", Time.get_ticks_msec() - start)
 	# create & place units
-	Unit.unitCreation(missionParams, "")
+	Unit.unitCreation(missionParams)
 	prints("Adding units", Time.get_ticks_msec() - start)
 	# removeSpawnAreas
 	get_node("player1_deploy").free()
@@ -61,6 +59,19 @@ func _process(delta):
 	$Node2D/Control/VBoxContainer/mode.text = str("Mode ", "%s" % (Mode.MODE))
 	#Debug.log("Selected units: ", getSelectedUnits())
 	pass
+	
+	
+func saveUsrGameData() -> void:
+	var data = JSON.stringify({
+		"missionParams": missionParams,
+		"units": {
+			"player1": {},
+			"player2": {}
+		}
+	}, "\t")
+	
+	GameDataHandler.writeToGameDataFile(data)
+	
 	
 func getNumUnitsInScene() -> Dictionary:
 	var unitCount = 0
@@ -81,16 +92,16 @@ func executeTurn():
 	prints("Turn executing!")
 	# take screenshot and then process all orders
 	screenShotCurrentViewport()
-	if await processTurn():
-		# reset to start positions
-		prints("Resetting entities in order to play turn for player")
-		currentStateControl.hide()
-		# set progressbar to 0
-		var progressBar = $Control/TurnCalcProgressModal/ProgressBar
-		progressBar.set_value_no_signal(0)
-		
-		# start turn replay
-		playTurnStart()
+	# if await processTurn():
+	# reset to start positions
+	prints("Resetting entities in order to play turn for player")
+	currentStateControl.hide()
+	# set progressbar to 0
+	var progressBar = $Control/TurnCalcProgressModal/ProgressBar
+	progressBar.set_value_no_signal(0)
+	
+	# start turn replay
+	playTurnStart()
 		
 ## Emits the start of the replay.
 func playTurnStart() -> void:
@@ -146,7 +157,7 @@ func screenShotCurrentViewport() -> void:
 	currentStateControl.show()
 	#currentStateNode.mouse_filter = 0
 
-func processParams(json, extra : String = ""): # as a json-formatted string 
+func processParams(json): # as a json-formatted string 
 	MissionParameters.MISSION_PARAMS = json
 	missionParams = json
 	mapSize = MissionParameters.MISSION_PARAMS.size
@@ -182,7 +193,7 @@ func calcZonePosition(player: String, z : int = 200, x : int = 50):
 	var pos = Vector3(0,0,0)
 	
 	pos.y = 10
-	pos.z = (mapz / 2) - (x / 2)
+	pos.z = (mapz / 2.0) - (x / 2.0)
 	if player == "player2":
 		pos.z -= mapx - x
 	
@@ -198,7 +209,7 @@ func calcZonePosition(player: String, z : int = 200, x : int = 50):
 func signalWasCalled(message):
 	prints("was called", message)
 	
-func _on_ground_input_event(camera, event, click_position, click_normal, shape_idx):
+func _on_ground_input_event(_camera, event, _click_position, _click_normal, _shape_idx):
 	if event is InputEventMouseButton and Input.get_mouse_button_mask() == 1:
 		if Mode.MODE == 0:
 			Selection.unselect()

@@ -24,7 +24,7 @@ func calculate_centroid(points, vector3 : float = 0.0):
 	return centroid
 																   
 
-func roundTo(value : float, tolerance = tolerance):
+func roundTo(value : float):
 	var newValue = float(
 			String.num(
 				value, 
@@ -33,7 +33,7 @@ func roundTo(value : float, tolerance = tolerance):
 		)
 	return newValue
 
-func is_point_inside_polygon(point, polygon, tolerance = tolerance):
+func is_point_inside_polygon(point, polygon):
 	var count = polygon.size()
 	var inside = false
 	

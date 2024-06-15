@@ -51,7 +51,9 @@
 	},
 	"player2": {
 		"germanriflecompany" : {
-			"meta": true
+			"meta": true,
+			"definitions": "",
+			"units": {}
 		},
 	},
 	"objectives": {

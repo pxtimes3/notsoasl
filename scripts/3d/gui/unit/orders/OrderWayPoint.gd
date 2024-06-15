@@ -6,13 +6,17 @@ extends Area3D
 signal isDragging
 
 @export var is_dragging : bool
-@export var pos : Vector3
-@export var order : String
-@export var radius : float
-@export var color : Color
+@export var waypointPos : Vector3
+@export var waypointOrder : String
+@export var waypointRadius : float
+@export var waypointColor : Color
 
 func _init(pos: Vector3, order : String, radius : float = 0.5, color = Color.WHITE_SMOKE) -> void:
 	self.order = order
+	self.waypointPos = pos
+	self.waypointOrder = order
+	self.waypointRadius = radius
+	self.waypointColor = color
 	
 	var mesh = MeshInstance3D.new()
 	
@@ -30,7 +34,6 @@ func _init(pos: Vector3, order : String, radius : float = 0.5, color = Color.WHI
 	collisionMesh.shape = sphereShape
 		
 	mesh.mesh = sphere
-	mesh.SHADOW_CASTING_SETTING_OFF
 	mesh.cast_shadow = false
 	
 	mesh.material_override = mat

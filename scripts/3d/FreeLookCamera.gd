@@ -143,7 +143,7 @@ func _unhandled_input(event):
 		_mouse_event = event
 
 
-func _physics_process(delta):
+func _physics_process(_delta):
 	# get_node("/root/main/Units/Unit/Sprite2D").position = self.unproject_position(global_transform.origin)
 	if _query_mouse:
 		_check_sprite_input()
@@ -173,7 +173,7 @@ func _check_if_sprite2d_was_clicked(event : InputEvent) -> bool:
 
 
 func _handle_sprite2d_click(sprite : Sprite2D, event : InputEvent) -> bool:
-	sprite._handle_click(sprite, event)
+	sprite._handle_click(event)
 	return true # for now?
 
 

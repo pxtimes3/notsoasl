@@ -24,3 +24,9 @@ signal Orders
 ### ORDERS
 signal openOrdersMenu
 signal ordersMenu
+
+
+
+# ----
+func _ready():
+	game_loaded.emit()

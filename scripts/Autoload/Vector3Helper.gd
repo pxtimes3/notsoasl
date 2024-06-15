@@ -26,7 +26,7 @@ func compute2DPolygonCentroid(vertices : Array):
 	var y1 := 0.0	# next vertex Y
 	var a  := 0.0	# partial signed area
 	
-	var lastdex := vertexCount - 1
+	# var lastdex := vertexCount - 1
 	# const Point2D* prev = &(vertices[lastdex]);
 	var prev = vertices[vertices.size() - 1]
 	var next 

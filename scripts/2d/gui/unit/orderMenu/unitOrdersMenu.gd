@@ -7,9 +7,7 @@ func _ready() -> void:
 	self.hide()
 	PubSub.ordersMenu.connect(showMenu)
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	
+func _process(_delta: float) -> void:
 	var menuArea = $VBoxContainer.get_rect()
 	if self.visible:
 		if not Rect2(menuArea['position'], menuArea['size']).has_point(get_local_mouse_position()):
@@ -19,7 +17,7 @@ func _process(delta: float) -> void:
 		else:
 			$Timer.stop()
 	
-func showMenu(position : Vector2 = Vector2(0,0), unitType : String = ""):
+func showMenu():
 	# TODO: Kolla så den inte försvinner utanför viewporten
 	print("I'm at: ", self.global_position)
 	print("I wanna show myself at: ", get_global_mouse_position())

@@ -34,14 +34,14 @@ func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("mouse_right_click") \
 	and Mode.MODE == 1:
 		indicator.hide()
-		Mode.endMode(1)
+		Mode.endMode(Mode.ORDER)
 	
 	if event.is_action_pressed("order_delete_node") \
 	and Selection.getSelectedUnits().size() > 0:
 		deleteLastNode()
 
 
-func _process(delta) -> void:
+func _process(_delta) -> void:
 	if Mode.MODE == 1:
 		var mousePos = get_mouse_pos()
 		if mousePos:
@@ -53,7 +53,7 @@ func showOrdersMenu(pos : Vector2):
 
 
 ## Return collision w. ground at coordinates
-func getGroundAtCoordinates(coordinates : Vector3, mask : int = 1, RAY_LENGTH : int = -1000):
+func getGroundAtCoordinates(coordinates : Vector3, _mask : int = 1, RAY_LENGTH : int = -1000):
 	var space_state = get_parent().get_world_3d().get_direct_space_state()
 	var ray_origin = coordinates
 	var ray_end = Vector3(coordinates.x, RAY_LENGTH, coordinates.z)
@@ -169,5 +169,5 @@ func deleteLastNode():
 			orders[orders.size() - 1].free()
 			orders[orders.size() - 2].free()
 			var unitPoints : Array = points[n]
-			var unitPointToDelete : int = unitPoints.size() - 1
+			
 			unitPoints.pop_back()

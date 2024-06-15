@@ -42,11 +42,14 @@ var _mouse_input_received := false
 
 func _ready():
 	PubSub.unit_input_event.connect(try_mouse_input.bind(self))
+	PubSub.executeTurn.connect(turnPlayStart.bind())
+	PubSub.turnPlayStart.connect(turnPlayStart.bind())
+	PubSub.turnPlayEnd.connect(turnPlayEnd.bind())
 	var camera = get_viewport().get_camera_3d()
 	if camera.has_signal("mouse_ray_processed"):
 		camera.mouse_ray_processed.connect(_on_3d_mouse_ray_processed)
 	
-func _process(delta):
+func _process(_delta):
 	if Engine.get_process_frames() % 300 == 0:
 		var repCenter = centroid.calculate_centroid(getUnitEntityPositions())
 		$UnitMarkerAnchor.position.x = repCenter.x
@@ -128,7 +131,7 @@ func ordersVisibility(state : int):
 
 
 
-func try_mouse_input(caller: Node, camera: Node, event: InputEvent, input_position: Vector3, normal: Vector3) -> bool:
+func try_mouse_input(caller: Node, _camera: Node, event: InputEvent, _input_position: Vector3, _normal: Vector3) -> bool:
 	prints(caller)
 	if event.button_mask != 0:
 		## we got a click
@@ -162,3 +165,16 @@ func _on_3d_mouse_ray_processed() -> void:
 		mouse_exited.emit()
 	
 	_mouse_input_received = false
+
+
+################
+## EXECUTE TURN!
+################
+
+func turnPlayStart() -> void:
+	# record start position, orders, unit entities, alive/destroyed
+	pass
+	
+	
+func turnPlayEnd() -> void:
+	pass

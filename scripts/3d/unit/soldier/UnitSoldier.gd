@@ -17,11 +17,11 @@ var FATIGUE: int = 100 # 0 = exhausted TODO: regen?
 var HEALTH: int = 3 # 0 dead, 1 injured, 2 wounded, 3 healthy
 var EQUIPMENT: Dictionary = {}
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	pass
 
 func _physics_process(delta: float) -> void:
-	var direction = Vector3.ZERO
+	#var direction = Vector3.ZERO
 	if not is_on_floor(): # If in the air, fall towards the floor. Literally gravity
 		target_velocity.y = target_velocity.y - (fall_acceleration * delta)
 	else: 
@@ -31,7 +31,7 @@ func _physics_process(delta: float) -> void:
 	move_and_slide()
 
 
-func try_mouse_input(caller: Node, camera: Node, event: InputEvent, input_position: Vector3, normal: Vector3) -> bool:
+func try_mouse_input(caller: Node, _camera: Node, event: InputEvent, _input_position: Vector3, _normal: Vector3) -> bool:
 	prints(caller)
 	if event.button_mask != 0:
 		# get unit
@@ -62,6 +62,4 @@ func outline(on):
 ##
 ## @param order = Dictionary in the form of {"move" : "destination as Vector3"}
 func recieveOrder(order : Array) -> void:
-	#prints(self, "got order", order)
-	pass
-
+	prints(self, "got order", order)

@@ -42,7 +42,7 @@ func executeTurn() -> void:
 	MODE = GAMESTATE.TURN
 
 
-func endMode(mode : GAMESTATE) -> void:
+func endMode(_mode : GAMESTATE) -> void:
 	textTopMiddle.text = ""
 	MODE = GAMESTATE.NORMAL
 	CURRENTORDER = ""
