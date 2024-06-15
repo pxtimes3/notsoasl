@@ -1,10 +1,15 @@
-[gd_scene load_steps=11 format=3 uid="uid://dr4d6e4ggl8po"]
+[gd_scene load_steps=22 format=3 uid="uid://dr4d6e4ggl8po"]
 
 [ext_resource type="Script" path="res://scripts/main.gd" id="1_v1ljn"]
 [ext_resource type="Script" path="res://scripts/3d/FreeLookCamera.gd" id="2_jj0fa"]
 [ext_resource type="ArrayMesh" uid="uid://cyiwgq5mvp2wl" path="res://resources/missions/basicmission/ground3.obj" id="3_p1gkf"]
 [ext_resource type="PackedScene" uid="uid://ba5hmlo5tdrwy" path="res://scenes/2d/gui/gameUI/gameUI.tscn" id="5_mckax"]
 [ext_resource type="PackedScene" uid="uid://difi78q3aeqpp" path="res://scenes/2d/gui/unit/orderMenu/unitOrdersMenu.tscn" id="6_a25lb"]
+[ext_resource type="Material" uid="uid://cgdarb5y2wfmn" path="res://resources/shaders/blur.y.tres" id="6_n5nu6"]
+[ext_resource type="Material" uid="uid://d0ew7chx4whtx" path="res://resources/shaders/blur.x.tres" id="7_74nhu"]
+[ext_resource type="Texture2D" uid="uid://xw46as8lgr1j" path="res://screencapture.png" id="8_iv0hy"]
+[ext_resource type="Material" uid="uid://fch8nvnqfju1" path="res://resources/shaders/vignette.tres" id="9_0l2nj"]
+[ext_resource type="FontFile" uid="uid://cb86ktsh83ekv" path="res://assets/fonts/Pixellari.ttf" id="10_pgf0k"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_k04rd"]
 albedo_color = Color(0.101571, 0.369694, 0.187784, 1)
@@ -21,6 +26,26 @@ height = 0.5
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_aeffw"]
 shading_mode = 0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yqkpw"]
+bg_color = Color(0.0611218, 0.259824, 0.12236, 1)
+shadow_size = 3
+shadow_offset = Vector2(3, 3)
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_3n0n0"]
+
+[sub_resource type="Theme" id="Theme_77asn"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_35xe6"]
+bg_color = Color(0.0646965, 0.0646965, 0.0646965, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ftt4e"]
+bg_color = Color(0.590925, 0.229463, 0.198394, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_tnpyh"]
+font = ExtResource("10_pgf0k")
+outline_size = 1
+outline_color = Color(0, 0, 0, 1)
 
 [node name="main" type="Node3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 125, 0, 125)
@@ -55,7 +80,8 @@ _detection_layers = 3
 
 [node name="GameUi" parent="." instance=ExtResource("5_mckax")]
 
-[node name="UnitOrdersMenu" parent="." instance=ExtResource("6_a25lb")]
+[node name="UnitOrdersMenu" parent="GameUi" instance=ExtResource("6_a25lb")]
+layout_mode = 1
 
 [node name="Node2D" type="Node2D" parent="."]
 
@@ -122,5 +148,118 @@ light_energy = 4.474
 light_size = 1.0
 light_bake_mode = 1
 omni_shadow_mode = 0
+
+[node name="Control" type="Control" parent="."]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Y" type="SubViewportContainer" parent="Control"]
+unique_name_in_owner = true
+material = ExtResource("6_n5nu6")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+stretch = true
+
+[node name="SubViewport" type="SubViewport" parent="Control/Y"]
+transparent_bg = true
+handle_input_locally = false
+size = Vector2i(1152, 648)
+render_target_update_mode = 0
+
+[node name="X" type="SubViewportContainer" parent="Control/Y/SubViewport"]
+unique_name_in_owner = true
+material = ExtResource("7_74nhu")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+stretch = true
+
+[node name="SubViewport" type="SubViewport" parent="Control/Y/SubViewport/X"]
+transparent_bg = true
+handle_input_locally = false
+size = Vector2i(1152, 648)
+render_target_update_mode = 4
+
+[node name="CurrentState" type="Sprite2D" parent="Control/Y/SubViewport/X/SubViewport"]
+z_as_relative = false
+texture = ExtResource("8_iv0hy")
+centered = false
+
+[node name="ColorRect" type="ColorRect" parent="Control/Y/SubViewport/X/SubViewport"]
+material = ExtResource("9_0l2nj")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TurnCalcProgressModal" type="Control" parent="Control"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="Panel" parent="Control/TurnCalcProgressModal"]
+layout_mode = 0
+offset_left = -137.0
+offset_top = -21.0
+offset_right = 176.0
+offset_bottom = 40.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_yqkpw")
+
+[node name="ProgressBar" type="ProgressBar" parent="Control/TurnCalcProgressModal"]
+material = SubResource("CanvasItemMaterial_3n0n0")
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -147.0
+offset_top = -13.5
+offset_right = 147.0
+offset_bottom = 13.5
+grow_horizontal = 2
+grow_vertical = 2
+theme = SubResource("Theme_77asn")
+theme_override_constants/outline_size = 0
+theme_override_styles/background = SubResource("StyleBoxFlat_35xe6")
+theme_override_styles/fill = SubResource("StyleBoxFlat_ftt4e")
+step = 1.0
+
+[node name="Label" type="Label" parent="Control/TurnCalcProgressModal"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -46.0
+offset_top = -30.5
+offset_right = 46.0
+offset_bottom = -7.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "Loading stuff"
+label_settings = SubResource("LabelSettings_tnpyh")
 
 [connection signal="input_event" from="ground" to="." method="_on_ground_input_event"]

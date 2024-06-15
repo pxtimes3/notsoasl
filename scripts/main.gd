@@ -1,16 +1,20 @@
 extends Node3D 
 
-var _parametersPath = ""
-var _missionUnitsPath = ""
-var _typePath = ""
+@export var _parametersPath = ""
+@export var _missionUnitsPath = ""
+@export var _typePath = ""
+@export var speed = 1
 
-var missionpath : String = "res://resources/missions/basicmission/" # missionpath as reported by MainMenu
+@export var missionpath : String = "res://resources/missions/basicmission/" # missionpath as reported by MainMenu
 # var missionSelector = "res://gui/mainMenu/MissionSelector.gd" # debug
-var missionSelector = MissionSelector.new() # .get_node("MainMenu") # debug
+@export var missionSelector = MissionSelector.new() # .get_node("MainMenu") # debug
 # var missionparams = missionSelector.loadMissions()
-var missionParams = {}
-var mapSize := []
-var _player : int = 0
+@export var missionParams = {}
+@export var mapSize := []
+@export var _player : int = 0
+
+@onready var currentStateControl = get_node("Control")
+@onready var currentStateNode    = get_node("Control/Y/SubViewport/X/SubViewport/CurrentState")
 
  #debug variables
 var unitEntityCount := {"units": 0, "entities": 0}
@@ -21,6 +25,9 @@ var currentDefinitions = {}
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	# subscribe to signals
+	PubSub.executeTurn.connect(executeTurn.bind())
+	PubSub.turnPlayStart.connect(playTurnStart.bind())
 	# load params
 	#missionparams = $MissionSelector.missionsDict
 	var start = Time.get_ticks_msec()
@@ -68,12 +75,76 @@ func getNumUnitsInScene() -> Dictionary:
 		
 	return {"units": unitCount, "entities": entityCount}
 	
+	
+## Main conductor of the turn execution and replay.
 func executeTurn():
 	prints("Turn executing!")
-	# execute turn
-		# process each "order" async
-		# timer 60s
-	pass
+	# take screenshot and then process all orders
+	screenShotCurrentViewport()
+	if await processTurn():
+		# reset to start positions
+		prints("Resetting entities in order to play turn for player")
+		currentStateControl.hide()
+		# set progressbar to 0
+		var progressBar = $Control/TurnCalcProgressModal/ProgressBar
+		progressBar.set_value_no_signal(0)
+		
+		# start turn replay
+		playTurnStart()
+		
+## Emits the start of the replay.
+func playTurnStart() -> void:
+	prints("main.gd PubSub.turnPlaying.emit()")
+	PubSub.turnPlaying.emit()
+	
+## Emits the end of the replay.
+func playTurnEnd() -> void:
+	prints("main.gd PubSub.turnPlayEnd.emit()")
+	PubSub.turnPlayEnd.emit()
+
+## Processes the turn events before replaying them for the player.[br]
+## Increases turn speed to 100 in order to speed things up. :P [br]
+## [br]
+func processTurn() -> bool:
+	# increase speed 
+	setTurnSpeed(100)
+	# do everything and "record it" to log.
+	var progressBar = $Control/TurnCalcProgressModal/ProgressBar
+	await get_tree().create_timer(1.0).timeout
+	progressBar.value = 10
+	await get_tree().create_timer(0.5).timeout
+	progressBar.value = 40
+	await get_tree().create_timer(1.5).timeout
+	progressBar.value = 60
+	await get_tree().create_timer(1.0).timeout
+	progressBar.value = 100
+	await get_tree().create_timer(0.3).timeout
+	# set normal speed
+	setTurnSpeed()
+	return true
+
+## Sets the speed of how fast events happen in a turn.[br][br]
+## [paran val] = [int] Default: 1
+func setTurnSpeed(val : int = 1) -> void:
+	prints("Turnspeed changed to:", val)
+	speed = val
+	
+## Returns current turn speed.
+func getTurnSpeed() -> int:
+	return speed
+
+
+func screenShotCurrentViewport() -> void:
+	await RenderingServer.frame_post_draw
+
+	# Retrieve the captured image.
+	var img = get_viewport().get_texture().get_image()
+	img.save_png("res://screencapture.png")
+
+	var imgtex = ImageTexture.create_from_image(img)
+	currentStateNode.texture = imgtex
+	currentStateControl.show()
+	#currentStateNode.mouse_filter = 0
 
 func processParams(json, extra : String = ""): # as a json-formatted string 
 	MissionParameters.MISSION_PARAMS = json
