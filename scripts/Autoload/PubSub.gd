@@ -7,6 +7,10 @@ signal game_loaded
 
 ### TURN
 signal executeTurn(turn : int)
+signal turnProcessed()
+signal turnPlayStart()
+signal turnPlaying()
+signal turnPlayEnd()
 
 ### UNIT
 signal unit_input_event(caller: Node, event: InputEvent)
