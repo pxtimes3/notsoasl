@@ -40,7 +40,9 @@ mono_crash.*.json
 
 # End of https://www.toptal.com/developers/gitignore/api/linux,godot
 
-# *.bak.*
+# MY STUFF
+screencapture.pn*
+*.bak.*
 *.bak.*
 *.pdf
 assets/ref/3dmodels/*
