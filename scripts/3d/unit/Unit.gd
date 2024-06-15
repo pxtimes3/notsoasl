@@ -2,10 +2,21 @@
 class_name UnitEntity
 extends Node3D
 
-var unitEntityScene: PackedScene = load("res://scenes/3d/unit/Unit.tscn")
-var centroid = Centroid.new()
+#signal input_event(camera: Node, event: InputEvent, position: Vector3, normal: Vector3)
+#signal PubSub.input_event(camera: Node, event: InputEvent, position: Vector3, normal: Vector3)
+signal mouse_entered()
+signal mouse_exited()
 
-@onready var _unitMarker = $UnitMarker/SubViewport/Control
+var unitEntityScene: PackedScene = load("res://scenes/3d/unit/Unit.tscn")
+
+var unitIcon = preload("res://assets/sprites/ui/unit/icon-ak47-48x48.svg")
+var unitIconSelected = preload("res://assets/sprites/ui/unit/icon-ak47-48x48-selected.svg")
+
+var mouse_over := false
+var centroid = Centroid.new()
+var _mouse_input_received := false
+
+@onready var _unitMarker = $UnitMarker2D
 @export var unitMiddle = Vector3.UP
 @export var SELECTED : bool = false
 @export var UNITID : String = ""
@@ -27,6 +38,20 @@ var centroid = Centroid.new()
 	## {"patrol" : [start Vector3, end Vector3]},
 	## {"patrol" : "pos Vector3"}
 ]
+
+
+func _ready():
+	PubSub.unit_input_event.connect(try_mouse_input.bind(self))
+	var camera = get_viewport().get_camera_3d()
+	if camera.has_signal("mouse_ray_processed"):
+		camera.mouse_ray_processed.connect(_on_3d_mouse_ray_processed)
+	
+func _process(delta):
+	if Engine.get_process_frames() % 300 == 0:
+		var repCenter = centroid.calculate_centroid(getUnitEntityPositions())
+		$UnitMarkerAnchor.position.x = repCenter.x
+		$UnitMarkerAnchor.position.z = repCenter.y
+
 
 func yell(message):
 	prints(message)
@@ -50,15 +75,7 @@ func createUnitEntity(UnitID:String, UnitType:String, Company:String, Platoon:St
 	
 	return self
 
-func _ready():
-	pass
-	
-func _process(delta):
-	if Engine.get_process_frames() % 300 == 0:
-		var repCenter = centroid.calculate_centroid(getUnitEntityPositions())
-		$UnitMarker.position.x = repCenter.x
-		$UnitMarker.position.z = repCenter.y
-	
+
 func executeTurn():
 	pass
 
@@ -83,29 +100,19 @@ func getUnitEntityPositions() -> Array:
 	return entitiesXZ
 	
 
-func _toggleSelected() -> void:
-	if SELECTED == false:
-		SELECTED = true
-		_unitMarker.get_node("Unselected").hide()
-		_unitMarker.get_node("Selected").show()
-		ordersVisibility(1)
-	else:
-		SELECTED = false
-		_unitMarker.get_node("Selected").hide()
-		_unitMarker.get_node("Unselected").show()
-		ordersVisibility(0)
-
 func selectUnit() -> void:
 	SELECTED = true
-	_unitMarker.get_node("Unselected").hide()
-	_unitMarker.get_node("Selected").show()
+	_unitMarker.set_texture(unitIconSelected)
+	get_tree().call_group("squad-" + self.SQUAD, "outline", 1)
 	ordersVisibility(1)
+	
 	
 func unSelectUnit() -> void:
 	SELECTED = false
-	_unitMarker.get_node("Unselected").show()
-	_unitMarker.get_node("Selected").hide()
+	_unitMarker.set_texture(unitIcon)
+	get_tree().call_group("squad-" + self.SQUAD, "outline", 0)
 	ordersVisibility(0)
+
 
 func ordersVisibility(state : int):
 	#pass
@@ -118,3 +125,40 @@ func ordersVisibility(state : int):
 		else:
 			for n in children:
 				n.show()
+
+
+
+func try_mouse_input(caller: Node, camera: Node, event: InputEvent, input_position: Vector3, normal: Vector3) -> bool:
+	prints(caller)
+	if event.button_mask != 0:
+		## we got a click
+		if event.button_mask == 1:
+			## left click
+			_mouse_input_received = true
+			PubSub.unit_input_left_click.emit(self, event)
+		elif event.button_mask == 2:
+			## right click
+			_mouse_input_received = true
+			PubSub.unit_input_right_click.emit(self, event)
+
+	return false
+
+func _on_3d_mouse_ray_processed() -> void:
+
+	# Received Input
+
+	if _mouse_input_received:
+
+		# Mouse Entered Case
+
+		if !mouse_over:
+			mouse_over = true
+			mouse_entered.emit()
+	
+	# Mouse Exited Case
+
+	elif mouse_over:
+		mouse_over = false
+		mouse_exited.emit()
+	
+	_mouse_input_received = false

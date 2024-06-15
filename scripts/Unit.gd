@@ -105,11 +105,11 @@ func newUnit(id : String, parent : String, unitType : String, _player : String, 
 	addEntitiesToUnit(myUnitEntity, definition.entities)
 	
 	# set unitmarker labels
-	myUnitEntity.get_node("UnitMarker/SubViewport/Control/Company").text = unitCompany
-	if unitSquad != "":
-		myUnitEntity.get_node("UnitMarker/SubViewport/Control/Platoon").text = unitPlatoon + "-" + unitSquad
-	else: 
-		myUnitEntity.get_node("UnitMarker/SubViewport/Control/Platoon").text = unitPlatoon
+	#myUnitEntity.get_node("UnitMarker/SubViewport/Control/Company").text = unitCompany
+	#if unitSquad != "":
+		#myUnitEntity.get_node("UnitMarker/SubViewport/Control/Platoon").text = unitPlatoon + "-" + unitSquad
+	#else: 
+		#myUnitEntity.get_node("UnitMarker/SubViewport/Control/Platoon").text = unitPlatoon
 	
 
 	# position unit
@@ -223,7 +223,7 @@ func configureUnitMarker(id : String, text : Array):
 func createAndAddEntity(unitScene : UnitEntity, entityVars : Dictionary, num : int = 1, count : int = 0) -> void:
 	spawnCoords = Vector3.UP
 	
-	var entityModel = load("res://scenes/3d/unit/soldier/unit_soldier.tscn")
+	var entityModel = load("res://scenes/3d/unit/soldier/UnitSoldier.tscn")
 	if entityVars.has("model"):
 		entityModel = load(entityVars.model) # well it's a scene, but you know...
 	

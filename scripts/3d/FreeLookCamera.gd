@@ -3,10 +3,12 @@
 #The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 #THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-class_name FreeLookCamera extends Camera3D
+class_name FreeLookCamera 
+extends Camera3D
+
+@onready var camera = self
 
 # TODO: Ändra Q + E till Y=0, Y=20 osv
-
 # Modifier keys' speed multiplier
 const SHIFT_MULTIPLIER = 2.5
 const ALT_MULTIPLIER = 1.0 / SHIFT_MULTIPLIER
@@ -116,3 +118,106 @@ func _update_mouselook():
 	
 		rotate_y(deg_to_rad(-yaw))
 		rotate_object_local(Vector3(1,0,0), deg_to_rad(-pitch))
+
+
+###################################################################################################
+##     RAYCASTING
+###################################################################################################
+
+const RAY_LENGTH = 1000.0
+
+signal mouse_ray_processed()
+
+@export_flags_3d_physics var _detection_layers
+
+var _query_mouse := false
+var _mouse_event : InputEventMouse
+
+
+func _unhandled_input(event):
+
+	# Take all unhandled mouse events and save them to be processed
+	
+	if event is InputEventMouseButton and event.button_index in [1,2]:
+		_query_mouse = true
+		_mouse_event = event
+
+
+func _physics_process(delta):
+	# get_node("/root/main/Units/Unit/Sprite2D").position = self.unproject_position(global_transform.origin)
+	if _query_mouse:
+		_check_sprite_input()
+		_query_mouse = false
+		mouse_ray_processed.emit()
+
+func _check_if_sprite2d_was_clicked(event : InputEvent) -> bool:
+	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
+		var from = event.global_position
+		# var to = from + project_ray_normal(event.global_position) * 1000
+		var to = from + Vector2(0, 100)
+
+		var space_state_2d = get_tree().root.get_world_2d().direct_space_state
+		var query = PhysicsRayQueryParameters2D.create(from, to)
+		query.collide_with_areas = true
+		query.hit_from_inside = true
+		var result = space_state_2d.intersect_ray(query)
+
+		if result:
+			var collider = result.collider
+			if collider is Area2D:
+				var sprite_2d = collider.get_parent()
+				if sprite_2d is Sprite2D:
+					return _handle_sprite2d_click(sprite_2d, event)
+		
+	return false
+
+
+func _handle_sprite2d_click(sprite : Sprite2D, event : InputEvent) -> bool:
+	sprite._handle_click(sprite, event)
+	return true # for now?
+
+
+func _check_sprite_input() -> bool:
+	
+	# List of unsuccessful Sprite3Ds
+
+	var not_hits = []
+
+	# Construct raycast parameters
+
+	var space_state = get_world_3d().direct_space_state
+	var from = project_ray_origin(_mouse_event.position)
+	var to = from + project_ray_normal(_mouse_event.position) * RAY_LENGTH
+	
+
+	# Iterate until successful hit or no valid sprites remain
+	while true:
+		var query = PhysicsRayQueryParameters3D.create(from, to, _detection_layers, not_hits)
+		query.collide_with_areas = true
+		
+		# Check for Sprite2D-click (i.e. unit marker)
+		var result := {}
+		if _check_if_sprite2d_was_clicked(_mouse_event) != true:
+			result = space_state.intersect_ray(query)
+
+		# Exit if no results
+		if result.is_empty():
+			# prints("Empty result")
+			return false
+
+		# Exit if successful collision
+		elif result.collider.owner != null \
+		and result.collider.owner.has_method("try_mouse_input"):
+			result.collider.owner.try_mouse_input(result.collider.owner, self, _mouse_event, result.position, result.normal)
+			return true
+		
+		elif result.collider.has_method("try_mouse_input"):
+			result.collider.try_mouse_input(result.collider, self, _mouse_event, result.position, result.normal)
+			return true
+			
+		# Add sprite to not hits
+		else:
+			# prints("No hit!", result.collider)
+			not_hits.append(result.collider)
+	
+	return true

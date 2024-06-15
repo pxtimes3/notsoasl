@@ -1,71 +1,63 @@
-[gd_scene load_steps=10 format=3 uid="uid://bjleatlgqd114"]
+[gd_scene load_steps=8 format=3 uid="uid://bjleatlgqd114"]
 
 [ext_resource type="Script" path="res://scripts/3d/unit/Unit.gd" id="1_alcf2"]
-[ext_resource type="PackedScene" uid="uid://c5y1rfr0y7ipr" path="res://scenes/3d/unit/UnitMarker.tscn" id="3_cicnl"]
-[ext_resource type="Script" path="res://scripts/3d/unit/UnitMarker.gd" id="3_n5xyf"]
-[ext_resource type="Texture2D" uid="uid://bo0q72o54n0sp" path="res://assets/sprites/ui/backgrounds/ww34.jpg" id="5_ixogc"]
-
-[sub_resource type="ViewportTexture" id="ViewportTexture_hon68"]
-viewport_path = NodePath("UnitMarker/SubViewport")
-
-[sub_resource type="QuadMesh" id="QuadMesh_xlmle"]
-size = Vector2(4, 4)
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_j5n1b"]
-transparency = 1
-shading_mode = 0
-albedo_color = Color(0.623529, 0.215686, 0.443137, 0)
-albedo_texture = ExtResource("5_ixogc")
-billboard_mode = 1
-billboard_keep_scale = true
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_mv3md"]
-resource_local_to_scene = true
-size = Vector3(8, 8, 8)
+[ext_resource type="Texture2D" uid="uid://bpiy43foqvqvs" path="res://assets/sprites/ui/unit/icon-ak47-48x48.svg" id="3_fwld2"]
+[ext_resource type="LabelSettings" uid="uid://cwx5sqnrg4s3v" path="res://scenes/3d/unit/unitmarker/labels.tres" id="4_7uerm"]
+[ext_resource type="Script" path="res://scripts/3d/unit/UnitMarker2D.gd" id="4_mm8n8"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_i3ddy"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_gpxyt"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_0fxln"]
 
 [node name="Unit" type="Node3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.635904, 0)
 script = ExtResource("1_alcf2")
 metadata/player = ""
 
-[node name="UnitMarker" type="Sprite3D" parent="."]
-transform = Transform3D(0.15, 0, 0, 0, 0.15, 0, 0, 0, 0.15, 0, -0.380499, 0)
-cast_shadow = 0
-visibility_range_begin_margin = 25.0
-visibility_range_end = 125.0
-visibility_range_end_margin = 25.0
-visibility_range_fade_mode = 1
-billboard = 1
-fixed_size = true
-texture = SubResource("ViewportTexture_hon68")
-script = ExtResource("3_n5xyf")
-
-[node name="SubViewport" type="SubViewport" parent="UnitMarker"]
-size = Vector2i(48, 48)
-
-[node name="Control" parent="UnitMarker/SubViewport" instance=ExtResource("3_cicnl")]
-size_flags_horizontal = 3
-size_flags_vertical = 3
-
-[node name="Quad" type="MeshInstance3D" parent="UnitMarker"]
-visible = false
-cast_shadow = 0
-mesh = SubResource("QuadMesh_xlmle")
-skeleton = NodePath("../..")
-surface_material_override/0 = SubResource("StandardMaterial3D_j5n1b")
-
-[node name="Area3D" type="Area3D" parent="UnitMarker/Quad"]
-transform = Transform3D(4, 0, 0, 0, 4, 0, 0, 0, 4, 0, 0, 0)
-input_capture_on_drag = true
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="UnitMarker/Quad/Area3D"]
-shape = SubResource("BoxShape3D_mv3md")
-
 [node name="Orders" type="Node" parent="."]
 
-[node name="Middle" type="MeshInstance3D" parent="."]
+[node name="UnitMarkerAnchor" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -3.14165, 0)
-visible = false
+transparency = 1.0
+cast_shadow = 0
 mesh = SubResource("BoxMesh_i3ddy")
+surface_material_override/0 = SubResource("StandardMaterial3D_gpxyt")
+
+[node name="UnitMarker2D" type="Sprite2D" parent="."]
+light_mask = 3
+visibility_layer = 3
+texture = ExtResource("3_fwld2")
+script = ExtResource("4_mm8n8")
+
+[node name="Area2D" type="Area2D" parent="UnitMarker2D"]
+collision_layer = 3
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="UnitMarker2D/Area2D"]
+scale = Vector2(2, 2)
+shape = SubResource("RectangleShape2D_0fxln")
+
+[node name="Control" type="Control" parent="UnitMarker2D"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Company" type="Label" parent="UnitMarker2D/Control"]
+layout_mode = 0
+offset_left = -16.0
+offset_top = -18.0
+offset_right = 24.0
+offset_bottom = 5.0
+text = "A"
+label_settings = ExtResource("4_7uerm")
+
+[node name="Platoon" type="Label" parent="UnitMarker2D/Control"]
+layout_mode = 0
+offset_left = -16.0
+offset_top = 3.0
+offset_right = 24.0
+offset_bottom = 26.0
+text = "B-B"
+label_settings = ExtResource("4_7uerm")

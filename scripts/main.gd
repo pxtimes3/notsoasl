@@ -21,25 +21,29 @@ var currentDefinitions = {}
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	## signals
-	PubSub.executeTurn.connect(executeTurn)
 	# load params
 	#missionparams = $MissionSelector.missionsDict
+	#var start = Time.get_ticks_msec()
+	prints("Processing mission parameters", Time.get_ticks_msec())
 	processParams(JSON.parse_string(FileAccess.get_file_as_string(missionpath + "parameters.json")))
-	#self.position.z = mapSize[0] / 2
-	#self.position.x = mapSize[1] / 2
+	prints("Placing maps", Time.get_ticks_msec())
 	self.global_position = Vector3(mapSize[1] / 2,0,mapSize[0] / 2)
 	# load map
 	# place objects (houses, roads, vegetation etc)
 	# create spawn areas
+	prints("Placing start areas", Time.get_ticks_msec())
 	createSpawnAreas()
 	# create & place units
+	prints("Adding units", Time.get_ticks_msec())
 	Unit.unitCreation(missionParams, "")
 	# removeSpawnAreas
 	get_node("player1_deploy").free()
 	get_node("player2_deploy").free()
 	unitEntityCount = getNumUnitsInScene()
-	
+	PubSub.game_loaded.emit()
+	prints("Done", str(Time.get_ticks_msec()) + " msec")
+	prints("------------")
+
 	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
@@ -111,6 +115,16 @@ func calcZonePosition(player: String, z : int = 200, x : int = 50):
 	
 	return pos
 
+
+###################################################################################################
+##     RAYCASTING
+###################################################################################################
+
+#func try_mouse_input(caller: Node, camera: Node, event: InputEvent, input_position: Vector3, normal: Vector3) -> bool:
+	#return false
+func signalWasCalled(message):
+	prints("was called", message)
+	
 func _on_ground_input_event(camera, event, click_position, click_normal, shape_idx):
 	if event is InputEventMouseButton and Input.get_mouse_button_mask() == 1:
 		if Mode.MODE == 0:

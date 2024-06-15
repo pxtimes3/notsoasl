@@ -12,11 +12,38 @@
 			"type" : "riflecompany",
 			"meta": true,
 			"units": {
+				"riflecompany-hq": {
+					"id": "riflecompany-1-hq",
+					"name": ["A", "HQ", ""],
+					"unitType": "company-hq",
+					"type": "unit"
+				},
+				"rifleplatoon-1-hq": {
+					"id": "rifleplatoon-1-hq",
+					"unitType": "rifleplatoon-hq",
+					"type": "unit",
+					"name": ["A", "A", "HQ"],
+					"parent": "riflecompany-1-hq",
+				},
 				"rifleplatoon-1-squad-A" : {
 					"id": "rifleplatoon-1-squad-A",
 					"type": "unit",
 					"unitType": "rifleplatoon-squad",
 					"name": ["A", "A", "A"],
+					"parent": "rifleplatoon-1-hq",
+				},
+				"rifleplatoon-1-squad-B" : {
+					"id": "rifleplatoon-1-squad-B",
+					"type": "unit",
+					"unitType": "rifleplatoon-squad",
+					"name": ["A", "A", "B"],
+					"parent": "rifleplatoon-1-hq",
+				},
+				"rifleplatoon-1-squad-C" : {
+					"id": "rifleplatoon-1-squad-C",
+					"type": "unit",
+					"unitType": "rifleplatoon-squad",
+					"name": ["A", "A", "C"],
 					"parent": "rifleplatoon-1-hq",
 				},
 			},

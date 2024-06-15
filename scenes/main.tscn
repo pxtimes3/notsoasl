@@ -51,6 +51,7 @@ directional_shadow_blend_splits = true
 transform = Transform3D(1, 0, 0, 0, 0.78043, 0.625243, 0, -0.625243, 0.78043, -28.6202, 66.6886, 171.488)
 fov = 50.0
 script = ExtResource("2_jj0fa")
+_detection_layers = 3
 
 [node name="GameUi" parent="." instance=ExtResource("5_mckax")]
 

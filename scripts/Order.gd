@@ -1,8 +1,5 @@
 extends Node
 
-signal openOrdersMenu
-signal ordersMenu
-
 var OrderWayPointScript = load("res://scripts/3d/gui/unit/orders/DragWayPoint.gd")
 var WayPointScene : PackedScene = load("res://scenes/3d/unit/OrderWaypoint.tscn")
 
@@ -52,7 +49,7 @@ func _process(delta) -> void:
 
 # Shows the orders menu at mouse position
 func showOrdersMenu(pos : Vector2):
-	ordersMenu.emit(pos)
+	PubSub.ordersMenu.emit(pos)
 
 
 ## Return collision w. ground at coordinates
@@ -131,10 +128,11 @@ func _drawWaypoints(unit : UnitEntity) -> void:
 		offset = getUnitOffset(unit)
 	
 	if points[unit].size() < 1:
-		points[unit].append(getGroundAtCoordinates(unit.global_position)) # add selected unit
-		var unitMiddle = await unit.getUnitMiddle() # assign unit position as point1
-		var unitPosition = getGroundAtCoordinates(unit.global_position)
-		point1 = Vector3(unitPosition.x - unitMiddle.x, unitPosition.y, unitPosition.z - unitMiddle.y)
+		var ground = getGroundAtCoordinates(unit.global_position)
+		var unitMiddle = unit.get_node("UnitMarker").global_position
+		unitMiddle.y = ground.y
+		points[unit].append(unitMiddle) # add selected unit
+		point1 = unitMiddle
 		point2 = offset + Vector3(get_mouse_pos()) # mouse position is point2
 		points[unit].append(point2) 
 	elif points[unit].size() > 1:
