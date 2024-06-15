@@ -6,9 +6,10 @@ enum GAMESTATE {NORMAL, ORDER, TURN}
 @export var CURRENTORDER : String = ""
 @onready var textTopMiddle = get_node("/root/main/GameUi/TopMiddle/MarginContainer/Text")
 
+func _ready() -> void:
+	PubSub.executeTurn.connect(executeTurn.bind())
 
-
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	if Selection.selectedUnits.size() > 0 and MODE == GAMESTATE.NORMAL:
 		#textTopMiddle.text = "SELECTEDUNIT"
 		pass
@@ -35,6 +36,10 @@ func _process(delta: float) -> void:
 		MODE = GAMESTATE.ORDER
 		CURRENTORDER = "order_move_crawl"
 		textTopMiddle.text = "ORDERDRAWLINE"
+
+
+func executeTurn() -> void:
+	MODE = GAMESTATE.TURN
 
 
 func endMode(mode : GAMESTATE) -> void:
