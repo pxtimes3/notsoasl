@@ -23,25 +23,27 @@ var currentDefinitions = {}
 func _ready():
 	# load params
 	#missionparams = $MissionSelector.missionsDict
-	#var start = Time.get_ticks_msec()
-	prints("Processing mission parameters", Time.get_ticks_msec())
+	var start = Time.get_ticks_msec()
+	
 	processParams(JSON.parse_string(FileAccess.get_file_as_string(missionpath + "parameters.json")))
-	prints("Placing maps", Time.get_ticks_msec())
+	prints("Processing mission parameters", Time.get_ticks_msec() - start)
+	
 	self.global_position = Vector3(mapSize[1] / 2,0,mapSize[0] / 2)
+	prints("Placing maps", Time.get_ticks_msec() - start)
 	# load map
 	# place objects (houses, roads, vegetation etc)
 	# create spawn areas
-	prints("Placing start areas", Time.get_ticks_msec())
 	createSpawnAreas()
+	prints("Placing start areas", Time.get_ticks_msec() - start)
 	# create & place units
-	prints("Adding units", Time.get_ticks_msec())
 	Unit.unitCreation(missionParams, "")
+	prints("Adding units", Time.get_ticks_msec() - start)
 	# removeSpawnAreas
 	get_node("player1_deploy").free()
 	get_node("player2_deploy").free()
 	unitEntityCount = getNumUnitsInScene()
 	PubSub.game_loaded.emit()
-	prints("Done", str(Time.get_ticks_msec()) + " msec")
+	prints("Done", str(Time.get_ticks_msec() - start) + " msec")
 	prints("------------")
 
 	

@@ -57,7 +57,7 @@ func select(caller : UnitEntity, event : InputEvent, button : int) -> void:
 				caller.unSelectUnit()
 			inputHandled()
 			
-	elif button == 2 and Input.is_key_pressed(KEY_CTRL):
+	elif Input.is_key_pressed(KEY_CTRL):
 		"""
 		Is CTRL pressed?
 		"""
@@ -76,7 +76,7 @@ func select(caller : UnitEntity, event : InputEvent, button : int) -> void:
 		
 		multiUnitSelection(unitsToSelect)
 	
-	prints(selectedUnits)
+	prints("selectedUnits:", selectedUnits)
 
 
 ## Handles the selection of multiple units when CTRL/CTRL+SHIFT is pressed[br]

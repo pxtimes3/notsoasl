@@ -129,7 +129,7 @@ func _drawWaypoints(unit : UnitEntity) -> void:
 	
 	if points[unit].size() < 1:
 		var ground = getGroundAtCoordinates(unit.global_position)
-		var unitMiddle = unit.get_node("UnitMarker").global_position
+		var unitMiddle = unit.get_node("UnitMarkerAnchor").global_position
 		unitMiddle.y = ground.y
 		points[unit].append(unitMiddle) # add selected unit
 		point1 = unitMiddle

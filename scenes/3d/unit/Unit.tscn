@@ -1,9 +1,9 @@
 [gd_scene load_steps=8 format=3 uid="uid://bjleatlgqd114"]
 
 [ext_resource type="Script" path="res://scripts/3d/unit/Unit.gd" id="1_alcf2"]
+[ext_resource type="Script" path="res://scripts/3d/unit/UnitMarker2D.gd" id="3_c14h7"]
 [ext_resource type="Texture2D" uid="uid://bpiy43foqvqvs" path="res://assets/sprites/ui/unit/icon-ak47-48x48.svg" id="3_fwld2"]
 [ext_resource type="LabelSettings" uid="uid://cwx5sqnrg4s3v" path="res://scenes/3d/unit/unitmarker/labels.tres" id="4_7uerm"]
-[ext_resource type="Script" path="res://scripts/3d/unit/UnitMarker2D.gd" id="4_mm8n8"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_i3ddy"]
 
@@ -29,7 +29,7 @@ surface_material_override/0 = SubResource("StandardMaterial3D_gpxyt")
 light_mask = 3
 visibility_layer = 3
 texture = ExtResource("3_fwld2")
-script = ExtResource("4_mm8n8")
+script = ExtResource("3_c14h7")
 
 [node name="Area2D" type="Area2D" parent="UnitMarker2D"]
 collision_layer = 3
