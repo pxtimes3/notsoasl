@@ -1,9 +1,22 @@
 extends Node
 
-signal level_completed
-signal player_harmed(amount : int)
+### GAME
+
+##### GAMESTART
+signal game_loaded
+
+### TURN
 signal executeTurn(turn : int)
+
+### UNIT
+signal unit_input_event(caller: Node, event: InputEvent)
+signal unit_input_left_click(caller: Node, event: InputEvent)
+signal unit_input_right_click(caller: Node, event: InputEvent)
 
 ### UNIT_SOLDIER
 signal onFloor(entity : CharacterBody3D)
 signal Orders
+
+### ORDERS
+signal openOrdersMenu
+signal ordersMenu
