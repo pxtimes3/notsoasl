@@ -3,20 +3,6 @@ extends Node2D
 
 var tolerance = 1e-2
 
-func calc(vertices : Array):
-	var centroid = calculate_centroid(vertices)
-	## print("Initial centroid:", centroid)
-	
-	var filtered_vertices = []
-	for vertex in vertices:
-		if not is_point_inside_polygon(vertex, vertices):
-			filtered_vertices.append(vertex)
-
-	centroid = calculate_centroid(filtered_vertices)
-	## print("Representative center:", centroid)
-	
-	return centroid
-
 func calculate_centroid(points, vector3 : float = 0.0):
 	var centroid = Vector2.ZERO
 	var count = points.size()
@@ -29,12 +15,14 @@ func calculate_centroid(points, vector3 : float = 0.0):
 	
 	centroid /= count
 	if vector3 != 0.0:
+		centroid = Vector3.ZERO
 		centroid.x = roundTo(centroid.x)
 		centroid.y = vector3
 		centroid.z = roundTo(centroid.y)
 	centroid.x = roundTo(centroid.x)
 	centroid.y = roundTo(centroid.y)
 	return centroid
+																   
 
 func roundTo(value : float, tolerance = tolerance):
 	var newValue = float(
