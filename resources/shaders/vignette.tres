@@ -1,0 +1,10 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://fch8nvnqfju1"]
+
+[ext_resource type="Shader" path="res://resources/shaders/vignette.gdshader" id="1_rclhl"]
+
+[resource]
+resource_local_to_scene = true
+shader = ExtResource("1_rclhl")
+shader_parameter/alpha = 0.2
+shader_parameter/inner_radius = 0.0
+shader_parameter/outer_radius = 1.0
