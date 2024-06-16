@@ -209,7 +209,7 @@ func calcZonePosition(player: String, z : int = 200, x : int = 50):
 func signalWasCalled(message):
 	prints("was called", message)
 	
-func _on_ground_input_event(_camera, event, _click_position, _click_normal, _shape_idx):
-	if event is InputEventMouseButton and Input.get_mouse_button_mask() == 1:
-		if Mode.MODE == 0:
-			Selection.unselect()
+#func _on_ground_input_event(_camera, event, _click_position, _click_normal, _shape_idx):
+	#if event is InputEventMouseButton and Input.get_mouse_button_mask() == 1:
+		#if Mode.MODE == 0:
+			#Selection.unselect()
