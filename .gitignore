@@ -49,3 +49,6 @@ assets/ref/3dmodels/*
 assets/ref/male_anatomy_by_precia_t_dcaizta-pre.jpg 
 assets/ref/male_anatomy_by_precia_t_dcaizta-pre.jpg.import
 assets/scripts/Sprite3DMouseOverTutorial
+addons/*
+logs/*
+usr/
