@@ -15,8 +15,16 @@ const CurrentLevel = LEVEL.DEBUG ## TODO: Change this before production :P
 
 static func array_to_string(arr: Array) -> String:
 	var s = ""
+	var n = 0
 	for i in arr:
-		s += str(i)
+		if n == 0:
+			s += "["
+		if n > 0:
+			s += ", \"" + str(i) + "\""
+		else:
+			s += "\"" + str(i) + "\""
+		n += 1
+	s += "]"
 	return s
 
 static func addToLog(string : String):
