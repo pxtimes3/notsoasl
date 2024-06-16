@@ -76,7 +76,7 @@ func select(caller : UnitEntity, event : InputEvent, button : int) -> void:
 		
 		multiUnitSelection(unitsToSelect)
 	
-	Log.debug(self, "selectedUnits:" + Log.array_to_string(selectedUnits))
+	Log.debug(self, "selectedUnits: " + Log.array_to_string(selectedUnits))
 
 
 ## Handles the selection of multiple units when CTRL/CTRL+SHIFT is pressed[br]
