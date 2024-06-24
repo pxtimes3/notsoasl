@@ -37,37 +37,37 @@ static func addToLog(string : String):
 	#	dir.rename(LOGPATH+LOGFILE, LOGPATH+newname)
 	
 	#var LOG = FileAccess.open(LOGPATH+LOGFILE,FileAccess.WRITE)
-	FileAccess.open(LOGPATH+LOGFILE,FileAccess.WRITE).store_string(string)
+	FileAccess.open(LOGPATH+LOGFILE,FileAccess.WRITE).store_string(string + "\n")
 	if CurrentLevel == 0:
-		prints(string)
+		print(string)
 	
 static func debug(caller : Node, message : String):
 	var time = str(Time.get_datetime_string_from_system())
-	addToLog("\n[ " + time + " ] [ DEBUG ] [ " + str(caller) + " ]: " + message)
+	addToLog("[ " + time + " ] [ DEBUG   ] [ " + str(caller) + " ]: " + message)
 
 	
 static func info(caller : Node, message : String):
 	var time = str(Time.get_datetime_string_from_system())
-	addToLog("\n[ " + time + " ] [ INFO ] [ " + str(caller) + " ]: " + message)
+	addToLog("[ " + time + " ] [ INFO    ] [ " + str(caller) + " ]: " + message)
 	
 	
 static func warning(caller : Node, message : String):
 	var time = str(Time.get_datetime_string_from_system())
-	var logString = "\n[" + time + "] [ WARNING ] [ " + str(caller) + " ]: " + message
+	var logString = "[ " + time + " ] [ WARNING ] [ " + str(caller) + " ]: " + message
 	addToLog(logString)
 	push_warning(logString)
 
 
 static func error(caller : Node, message : String):
 	var time = str(Time.get_datetime_string_from_system())
-	var logString = "\n[" + time + "] [ ERROR ] [ " + str(caller) + " ]: " + message
+	var logString = "[ " + time + " ] [ ERROR   ] [ " + str(caller) + " ]: " + message
 	addToLog(logString)
 	push_error(logString)
 	
 
 static func fatal(caller : Node, message : String):
 	var time = str(Time.get_datetime_string_from_system())
-	var logString = "\n[" + time + "] [ FATAL ] [ " + str(caller) + " ]: " + message
+	var logString = "[ " + time + " ] [ FATAL   ] [ " + str(caller) + " ]: " + message
 	addToLog(logString)
 	push_error(logString)
 	var tree = SceneTree.new()

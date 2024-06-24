@@ -3,7 +3,7 @@
 extends Node
 
 var UnitScene: PackedScene
-var UnitSoldier: PackedScene
+var UnitSoldier: PackedScene = load("res://scenes/3d/unit/soldier/UnitSoldier.tscn")
 var UnitMarker: PackedScene
 
 var unitGroups = Selection.unitGroups
@@ -219,9 +219,9 @@ func addEntitiesToUnit(unitScene : UnitEntity, definitions : Dictionary) -> Unit
 func createAndAddEntity(unitScene : UnitEntity, entityVars : Dictionary, num : int = 1, _count : int = 0) -> void:
 	spawnCoords = Vector3.UP
 	
-	var entityModel = load("res://scenes/3d/unit/soldier/UnitSoldier.tscn")
-	if entityVars.has("model"):
-		entityModel = load(entityVars.model) # well it's a scene, but you know...
+	#var entityModel = load("res://scenes/3d/unit/soldier/UnitSoldier.tscn").duplicate()
+	#if entityVars.has("model"):
+		#entityModel = load(entityVars.model) # well it's a scene, but you know...
 	
 	for x in num:
 		if spawnX > 6:
@@ -231,7 +231,7 @@ func createAndAddEntity(unitScene : UnitEntity, entityVars : Dictionary, num : i
 		spawnCoords.x = spawnX + randf_range(-0.5,0.5)
 		spawnCoords.z = spawnZ + randf_range(-0.5,0.5)
 		
-		var mySoldier = entityModel.instantiate()
+		var mySoldier = UnitSoldier.instantiate()
 		
 		mySoldier.COMPANY = unitScene.COMPANY	# id of the company
 		mySoldier.PLATOON = unitScene.PLATOON	# id of the platoon

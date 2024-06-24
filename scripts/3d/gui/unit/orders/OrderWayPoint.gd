@@ -12,7 +12,7 @@ signal isDragging
 @export var waypointColor : Color
 
 func _init(pos: Vector3, order : String, radius : float = 0.5, color = Color.WHITE_SMOKE) -> void:
-	self.order = order
+	#self.unitOorder = order
 	self.waypointPos = pos
 	self.waypointOrder = order
 	self.waypointRadius = radius

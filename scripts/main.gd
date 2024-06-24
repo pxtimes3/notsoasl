@@ -28,35 +28,35 @@ func _ready():
 	# load params
 	#missionparams = $MissionSelector.missionsDict
 	processParams(JSON.parse_string(FileAccess.get_file_as_string(missionpath + "parameters.json")))
-	prints("Processing mission parameters", Time.get_ticks_msec() - start)
+	Log.info(self, "Processing mission parameters " + str(Time.get_ticks_msec() - start))
 	
 	# save params to usr://tmp/epoch-missionname
 	saveUsrGameData()
 	
 	self.global_position = Vector3(mapSize[1] / 2,0,mapSize[0] / 2)
-	prints("Placing maps", Time.get_ticks_msec() - start)
+	Log.info(self, "Placing maps " + str(Time.get_ticks_msec() - start))
 	# load map
 	# place objects (houses, roads, vegetation etc)
 	# create spawn areas
 	createSpawnAreas()
-	prints("Placing start areas", Time.get_ticks_msec() - start)
+	Log.info(self, "Placing start areas " + str(Time.get_ticks_msec() - start))
 	# create & place units
 	Unit.unitCreation(missionParams)
-	prints("Adding units", Time.get_ticks_msec() - start)
+	Log.info(self, "Adding units " + str(Time.get_ticks_msec() - start))
 	# removeSpawnAreas
 	get_node("player1_deploy").free()
 	get_node("player2_deploy").free()
 	unitEntityCount = getNumUnitsInScene()
 	PubSub.game_loaded.emit()
-	prints("Done", str(Time.get_ticks_msec() - start) + " msec")
-	prints("------------")
+	Log.info(self, "Done! " + str(Time.get_ticks_msec() - start) + " msec")
+	Log.info(self, "------------")
 
 	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	$Node2D/Control/VBoxContainer/fps.text = str("FPS: ", "%.0f" % (1.0 / delta))
 	$Node2D/Control/VBoxContainer/unitsInScene.text = str("Units in scene ", "%.0f" % (unitEntityCount.units), ", entities ", "%.0f" % (unitEntityCount.entities))
-	$Node2D/Control/VBoxContainer/mode.text = str("Mode ", "%s" % (Mode.MODE))
+	$Node2D/Control/VBoxContainer/mode.text = str("Mode: ", "%s" % (Mode.MODE), " Speed: ", "%s" % (getTurnSpeed()))
 	#Debug.log("Selected units: ", getSelectedUnits())
 	pass
 	
@@ -93,6 +93,7 @@ func executeTurn():
 	# take screenshot and then process all orders
 	screenShotCurrentViewport()
 	# if await processTurn():
+	await processTurn()
 	# reset to start positions
 	prints("Resetting entities in order to play turn for player")
 	currentStateControl.hide()
@@ -106,6 +107,7 @@ func executeTurn():
 ## Emits the start of the replay.
 func playTurnStart() -> void:
 	prints("main.gd PubSub.turnPlaying.emit()")
+	PubSub.turnPlayStart.emit()
 	PubSub.turnPlaying.emit()
 	
 ## Emits the end of the replay.
@@ -118,16 +120,9 @@ func playTurnEnd() -> void:
 ## [br]
 func processTurn() -> bool:
 	# increase speed 
-	setTurnSpeed(100)
+	setTurnSpeed(1) # set this to a reasonable value
 	# do everything and "record it" to log.
 	var progressBar = $Control/TurnCalcProgressModal/ProgressBar
-	await get_tree().create_timer(1.0).timeout
-	progressBar.value = 10
-	await get_tree().create_timer(0.5).timeout
-	progressBar.value = 40
-	await get_tree().create_timer(1.5).timeout
-	progressBar.value = 60
-	await get_tree().create_timer(1.0).timeout
 	progressBar.value = 100
 	await get_tree().create_timer(0.3).timeout
 	# set normal speed

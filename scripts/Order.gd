@@ -34,7 +34,7 @@ func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("mouse_right_click") \
 	and Mode.MODE == 1:
 		indicator.hide()
-		Mode.endMode(Mode.ORDER)
+		Mode.endMode(Mode.GAMESTATE.ORDER)
 	
 	if event.is_action_pressed("order_delete_node") \
 	and Selection.getSelectedUnits().size() > 0:
@@ -151,7 +151,7 @@ func _drawWaypoints(unit : UnitEntity) -> void:
 	handOverOrderToUnit(unit, orderline)
 	handOverOrderToUnit(unit, cbWayPoint)
 	# send to Unit for distribution to it's entities.
-	unit.forwardOrderToEntities([cbWayPoint.order, cbWayPoint.global_position])
+	unit.forwardOrderToEntities([cbWayPoint.waypointOrder, cbWayPoint.global_position])
 
 
 ## Skickar över order/s till unit.
