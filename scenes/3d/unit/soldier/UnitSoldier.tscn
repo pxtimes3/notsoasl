@@ -3,6 +3,9 @@
 [ext_resource type="Script" path="res://scripts/3d/unit/soldier/UnitSoldier.gd" id="1_ivwjv"]
 [ext_resource type="PackedScene" uid="uid://bdepchahfykxh" path="res://assets/models/unit/soldier/unit-soldier-blue.glb" id="2_wd43f"]
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_jdsjg"]
+size = Vector3(0.594727, 1.48071, 0.548706)
+
 [sub_resource type="ArrayMesh" id="ArrayMesh_jgqql"]
 _surfaces = [{
 "aabb": AABB(-1.73716, -0.144338, -1.15844, 2.8815, 6.28865, 6.02661),
@@ -20,25 +23,12 @@ _surfaces = [{
 albedo_color = Color(0, 0, 0, 1)
 metallic_specular = 0.0
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_jdsjg"]
-size = Vector3(0.594727, 1.48071, 0.548706)
-
 [node name="UnitSoldier" type="CharacterBody3D"]
 collision_layer = 2
 input_capture_on_drag = true
 script = ExtResource("1_ivwjv")
 
 [node name="Pivot" type="Node3D" parent="."]
-
-[node name="unit-soldier-blue" parent="Pivot" instance=ExtResource("2_wd43f")]
-transform = Transform3D(0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, 0, 0, 0)
-
-[node name="OutlineMesh" type="MeshInstance3D" parent="Pivot/unit-soldier-blue"]
-visible = false
-cast_shadow = 0
-mesh = SubResource("ArrayMesh_jgqql")
-skeleton = NodePath("")
-surface_material_override/0 = SubResource("StandardMaterial3D_ladpw")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00341797, 0.767704, 0.0067749)
@@ -47,6 +37,19 @@ shape = SubResource("BoxShape3D_jdsjg")
 [node name="Debug" type="Node" parent="."]
 
 [node name="Orders" type="Node" parent="."]
+
+[node name="unit-soldier-blue" parent="." instance=ExtResource("2_wd43f")]
+transform = Transform3D(0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, 0, 0, 0)
+
+[node name="OutlineMesh" type="MeshInstance3D" parent="unit-soldier-blue"]
+visible = false
+cast_shadow = 0
+mesh = SubResource("ArrayMesh_jgqql")
+skeleton = NodePath("")
+surface_material_override/0 = SubResource("StandardMaterial3D_ladpw")
+
+[node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
+avoidance_enabled = true
 
 [connection signal="input_event" from="." to="." method="_on_input_event"]
 [connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]

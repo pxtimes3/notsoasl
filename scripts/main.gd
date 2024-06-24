@@ -1,3 +1,4 @@
+class_name Main
 extends Node3D 
 
 @export var speed = 1
@@ -24,7 +25,7 @@ func _ready():
 	var start = Time.get_ticks_msec()
 	# subscribe to signals
 	PubSub.executeTurn.connect(executeTurn.bind())
-	PubSub.turnPlayStart.connect(playTurnStart.bind())
+	# PubSub.turnPlayStart.connect(playTurnStart.bind())
 	# load params
 	#missionparams = $MissionSelector.missionsDict
 	processParams(JSON.parse_string(FileAccess.get_file_as_string(missionpath + "parameters.json")))

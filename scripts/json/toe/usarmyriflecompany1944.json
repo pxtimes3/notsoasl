@@ -7,6 +7,12 @@
 		"weaponsplatoon": 1
 	},
 	"units": {
+		"debug": {
+			"radio": true,
+			"entities": {
+				"coc": 1,
+			},
+		},
 		"company-hq": {
 			"radio": true,
 			"entities": {

@@ -1,0 +1,39 @@
+[gd_scene load_steps=7 format=3 uid="uid://rxa8mppp0pou"]
+
+[sub_resource type="PrismMesh" id="PrismMesh_7wvq4"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_v2ub4"]
+albedo_color = Color(0.111197, 0.111197, 0.111197, 1)
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_qx7cj"]
+points = PackedVector3Array(-0.5, -0.5, -0.5, 0.0146517, 0.470697, 0.470697, 0.0735213, 0.352957, 0.47061, -0.5, -0.5, 0.5, 0.5, -0.5, -0.5, -0.0146517, 0.470697, -0.470697, 0.5, -0.5, 0.5, -0.0146517, 0.470697, 0.470697, 0.0146517, 0.470697, -0.470697)
+
+[sub_resource type="BoxMesh" id="BoxMesh_gb0h2"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_rub2h"]
+albedo_color = Color(0.415686, 0, 0, 1)
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_fmihv"]
+points = PackedVector3Array(-0.5, -0.5, -0.5, 0.5, 0.5, 0.5, 0.5, -0.5, 0.5, 0.5, 0.5, -0.5, -0.5, 0.5, 0.5, 0.5, -0.5, -0.5, -0.5, -0.5, 0.5, -0.5, 0.5, -0.5)
+
+[node name="StaticBody3D" type="StaticBody3D"]
+
+[node name="Tak" type="MeshInstance3D" parent="."]
+transform = Transform3D(51.2148, 0, 0, 0, 13.4078, 0, 0, 0, 35.2641, -0.00918963, 20.3185, -0.00434877)
+mesh = SubResource("PrismMesh_7wvq4")
+skeleton = NodePath("../Hus")
+surface_material_override/0 = SubResource("StandardMaterial3D_v2ub4")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(51.2148, 0, 0, 0, 13.4078, 0, 0, 0, 35.2641, -0.00918963, 20.3185, -0.00434877)
+shape = SubResource("ConvexPolygonShape3D_qx7cj")
+
+[node name="Hus" type="MeshInstance3D" parent="."]
+transform = Transform3D(46.7342, 0, 0, 0, 14.9285, 0, 0, 0, 32.1789, -0.133862, 7, -0.0634232)
+mesh = SubResource("BoxMesh_gb0h2")
+skeleton = NodePath("../../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_rub2h")
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="."]
+transform = Transform3D(46.7342, 0, 0, 0, 14.9285, 0, 0, 0, 32.1789, -0.133862, 7, -0.0634232)
+shape = SubResource("ConvexPolygonShape3D_fmihv")

@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://cj53oipld1y3h"]
+
+[ext_resource type="PackedScene" uid="uid://rxa8mppp0pou" path="res://resources/models/buildings/farmClosedMesh.tscn" id="1_fv8tm"]
+
+[sub_resource type="NavigationMesh" id="NavigationMesh_brjhy"]
+vertices = PackedVector3Array(-25.1166, 14.2857, -17.1364, -25.1166, 14.2857, 17.1136, 25.1334, 14.2857, 17.1136, 25.1334, 14.2857, -17.1364, 0.818893, 27.0357, -17.1364, -0.802074, 27.0357, -17.1364, -0.802074, 27.0357, 17.1136, 0.818893, 27.0357, 17.1136, 1.36441, 26.7857, -13.1495, -1.60561, 26.7857, -13.1214, -0.120602, 27.2857, -13.1605, -20.3666, 14.7857, -15.8864, -20.3666, 14.7857, 15.6136, 20.3834, 14.7857, 15.6136, 20.3834, 14.7857, -15.8864)
+polygons = [PackedInt32Array(2, 8, 3), PackedInt32Array(3, 8, 4), PackedInt32Array(4, 10, 5), PackedInt32Array(5, 9, 0), PackedInt32Array(0, 9, 1), PackedInt32Array(1, 9, 6), PackedInt32Array(6, 10, 7), PackedInt32Array(7, 8, 2), PackedInt32Array(8, 10, 4), PackedInt32Array(10, 9, 5), PackedInt32Array(9, 10, 6), PackedInt32Array(10, 8, 7), PackedInt32Array(14, 13, 11), PackedInt32Array(11, 13, 12)]
+
+[node name="FarmClosed" type="Node3D"]
+
+[node name="NavigationRegion3D" type="NavigationRegion3D" parent="."]
+navigation_mesh = SubResource("NavigationMesh_brjhy")
+navigation_layers = 2
+enter_cost = 5.0
+
+[node name="StaticBody3D" parent="NavigationRegion3D" instance=ExtResource("1_fv8tm")]

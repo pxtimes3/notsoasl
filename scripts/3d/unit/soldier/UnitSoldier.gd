@@ -1,11 +1,14 @@
 extends CharacterBody3D
 
 @export var fall_acceleration = 75000
+@export var gravity: float = -9.8
 
 @export var ENTITY_STATUS = ""
 
 var _mouse_input_received := false
 var target_velocity = Vector3.ZERO
+
+@export var SPEED : float = 1.0
 
 var PLAYER: String # player controllable
 var SELECTED: bool = false
@@ -18,18 +21,16 @@ var MORALE: int = 100 # green = 50, conscript = 70, veteran = 100, elite = 120
 var FATIGUE: int = 100 # 0 = exhausted TODO: regen?
 var HEALTH: int = 3 # 0 dead, 1 injured, 2 wounded, 3 healthy
 var EQUIPMENT: Dictionary = {}
+
 @export var ORDERS : Array = []
+@export var CURRENT_ORDER : StaticBody3D
 
 
 func _ready():
 	PubSub.turnPlayStart.connect(turnStarted)
-	
-	PubSub.turnPlaying.connect(turnManager.bind([
-		
-	]))
-	
+	PubSub.turnPlaying.connect(turnManager.bind())
 	PubSub.turnPlayEnd.connect(turnEnded)
-
+	
 
 func _process(_delta: float) -> void:
 	pass
@@ -40,22 +41,70 @@ func turnManager(args : Array = []):
 
 
 func _physics_process(delta: float) -> void:
-	#var direction = Vector3.ZERO
-	if not is_on_floor(): # If in the air, fall towards the floor. Literally gravity
-		target_velocity.y = target_velocity.y - (fall_acceleration * delta)
-	else: 
-		PubSub.onFloor.emit(self, CONNECT_ONE_SHOT)
-	# Moving the Character
-	velocity = target_velocity
+	# Apply gravity
+	if not is_on_floor():
+		velocity.y += gravity * delta
+	
+	if CURRENT_ORDER:
+		if not is_at_waypoint():
+			# Log.debug(self, "wants to move to waypoint %s" % CURRENT_ORDER.global_position)
+			move_to_waypoint(delta)
+	else:
+		# If no order, just apply gravity
+		velocity.x = 0
+		velocity.z = 0
+	
+	# Apply the velocity
 	move_and_slide()
+	
+	# Check if we've landed on the floor
+	if is_on_floor():
+		PubSub.onFloor.emit(self, CONNECT_ONE_SHOT)
 
 
 func turnStarted():
-	set_process(true)
+	if getCurrentOrder():
+		CURRENT_ORDER = getCurrentOrder()
+		set_process(true)
 
 
 func turnEnded():
 	set_process(false)
+
+
+func getCurrentOrder():
+	var orders = get_node("Orders")
+	var count = orders.get_child_count()
+	if $Orders.get_child_count():
+		return $Orders.get_child(0)
+	else:
+		return false
+
+
+func is_at_waypoint() -> bool:
+	var dist = global_position.distance_to(CURRENT_ORDER.global_position)
+	# Log.debug(self, "I am %s units from my waypoint" % dist)
+	return  dist < 0.1
+
+func move_to_waypoint(delta):
+	if CURRENT_ORDER:
+		var target_position = CURRENT_ORDER.global_position
+		target_position.y = global_position.y  # Keep the same y-coordinate
+		
+		var direction = (target_position - global_position).normalized()
+		#if direction != Vector3.ZERO:
+		#	self.basis = basis.looking_at(target_position).inverse()
+		
+		# Set the horizontal velocity
+		velocity.x = direction.x * SPEED
+		velocity.z = direction.z * SPEED
+		
+		# The y velocity is already set by gravity
+		
+		# Make the character look at the waypoint
+		look_at(target_position, Vector3.UP, true)
+	else:
+		Log.debug(self, "No current order to move to")
 
 
 func try_mouse_input(caller: Node, _camera: Node, event: InputEvent, _input_position: Vector3, _normal: Vector3) -> bool:
@@ -78,10 +127,10 @@ func setSelected(value : bool):
 	
 	
 func outline(on):
-	if on == 1 and not $"Pivot/unit-soldier-blue/OutlineMesh".is_visible():
-		$"Pivot/unit-soldier-blue/OutlineMesh".show()
+	if on == 1 and not $"unit-soldier-blue/OutlineMesh".is_visible():
+		$"unit-soldier-blue/OutlineMesh".show()
 	else:
-		$"Pivot/unit-soldier-blue/OutlineMesh".hide()
+		$"unit-soldier-blue/OutlineMesh".hide()
 
 
 ## Recieves the units orders and adds to the unit-soldier to calculate when 
