@@ -1,5 +1,7 @@
 {
 	"name": "Basic Mission",
+	"path": "missions/basicmission",
+	"mesh": "mapMesh.obj",
 	"size": [
 		250,
 		250
@@ -93,13 +95,11 @@
 		}
 	},
 	"deployment": {
-		"player1": [
-			50,
-			200
-		],
-		"player2": [
-			50,
-			250
-		]
+		"player1": {
+			"zone1": [200, 50, 0, 100],
+		},
+		"player2": {
+			"zone1": [200, 50, 0, -100],
+		},
 	}
 }

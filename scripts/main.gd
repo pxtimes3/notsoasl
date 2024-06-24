@@ -32,21 +32,25 @@ func _ready():
 	
 	# save params to usr://tmp/epoch-missionname
 	saveUsrGameData()
-	
-	self.global_position = Vector3(mapSize[1] / 2,0,mapSize[0] / 2)
-	Log.info(self, "Placing maps " + str(Time.get_ticks_msec() - start))
+	Log.info(self, "Saved user gamedata " + str(Time.get_ticks_msec() - start))
+	# self.global_position = Vector3(mapSize[1] / 2,0,mapSize[0] / 2)
+	Log.info(self, "Creating world " + str(Time.get_ticks_msec() - start))
+	var world = GameWorld.new(missionParams)
+	if world:
+		add_child(world)
+		world.bakeNavigationmesh(world)
 	# load map
 	# place objects (houses, roads, vegetation etc)
 	# create spawn areas
-	createSpawnAreas()
+	# createSpawnAreas()
 	Log.info(self, "Placing start areas " + str(Time.get_ticks_msec() - start))
 	# create & place units
-	Unit.unitCreation(missionParams)
+	# Unit.unitCreation(missionParams)
 	Log.info(self, "Adding units " + str(Time.get_ticks_msec() - start))
 	# removeSpawnAreas
-	get_node("player1_deploy").free()
-	get_node("player2_deploy").free()
-	unitEntityCount = getNumUnitsInScene()
+	#get_node("player1_deploy").free()
+	# get_node("player2_deploy").free()
+	# unitEntityCount = getNumUnitsInScene()
 	PubSub.game_loaded.emit()
 	Log.info(self, "Done! " + str(Time.get_ticks_msec() - start) + " msec")
 	Log.info(self, "------------")
@@ -152,59 +156,14 @@ func screenShotCurrentViewport() -> void:
 	currentStateControl.show()
 	#currentStateNode.mouse_filter = 0
 
-func processParams(json): # as a json-formatted string 
+func processParams(json): 
 	MissionParameters.MISSION_PARAMS = json
 	missionParams = json
 	mapSize = MissionParameters.MISSION_PARAMS.size
 	
-func createSpawnAreas():
-	var n = 0
-	for x in missionParams.deployment.keys():
-		var zone = MeshInstance3D.new()
-		var imm = BoxMesh.new()
-		var mat = StandardMaterial3D.new()
-		
-		if n == 0: 
-			mat.albedo_color = Color(0,0,1,0.1)
-			n += 1
-		else: 
-			mat.albedo_color = Color(1,0,0,0.1)
-		imm.set_size(Vector3(200,1,50))
-		zone.mesh = imm
-		imm.material = mat
-		zone.transparency = 0.9
-		zone.cast_shadow = false
-		zone.position = calcZonePosition(x)
-		zone.name = str(x) + "_deploy"
-		zone.hide()
-		add_child(zone)
-	
-func calcZonePosition(player: String, z : int = 200, x : int = 50):
-	var mapz = mapSize[0]
-	var mapx = mapSize[1]
-	
-	# position utgår från mitten. x kan alltid vara 0 om zonen ska vara i mitten
-	# är kartan 250x250 så är pos.z + 25
-	var pos = Vector3(0,0,0)
-	
-	pos.y = 10
-	pos.z = (mapz / 2.0) - (x / 2.0)
-	if player == "player2":
-		pos.z -= mapx - x
-	
-	return pos
+
 
 
 ###################################################################################################
 ##     RAYCASTING
 ###################################################################################################
-
-#func try_mouse_input(caller: Node, camera: Node, event: InputEvent, input_position: Vector3, normal: Vector3) -> bool:
-	#return false
-func signalWasCalled(message):
-	prints("was called", message)
-	
-#func _on_ground_input_event(_camera, event, _click_position, _click_normal, _shape_idx):
-	#if event is InputEventMouseButton and Input.get_mouse_button_mask() == 1:
-		#if Mode.MODE == 0:
-			#Selection.unselect()
