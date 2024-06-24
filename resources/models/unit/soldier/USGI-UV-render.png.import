@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://baf00fvoaya2e"
-path="res://.godot/imported/huvud2png.png-3b98b6dc9138d881a67fa0b28fe70b36.ctex"
+uid="uid://ilssvv75tgth"
+path="res://.godot/imported/USGI-UV-render.png-9465f93737467b89d2a102ea17b4dd2b.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://resources/models/unit/soldier/huvud2png.png"
-dest_files=["res://.godot/imported/huvud2png.png-3b98b6dc9138d881a67fa0b28fe70b36.ctex"]
+source_file="res://resources/models/unit/soldier/USGI-UV-render.png"
+dest_files=["res://.godot/imported/USGI-UV-render.png-9465f93737467b89d2a102ea17b4dd2b.ctex"]
 
 [params]
 
