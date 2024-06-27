@@ -26,14 +26,9 @@ PubSub="*res://scripts/Autoload/PubSub.gd"
 V3Helper="*res://scripts/Autoload/Vector3Helper.gd"
 GameDataHandler="*res://scripts/Autoload/IO/GameDataHandler.gd"
 
-[editor]
-
-version_control/plugin_name="GitPlugin"
-version_control/autoload_on_startup=true
-
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/Todo_Manager/plugin.cfg")
+enabled=PackedStringArray("res://addons/PolyHavenImport/plugin.cfg", "res://addons/Todo_Manager/plugin.cfg")
 
 [file_customization]
 
