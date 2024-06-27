@@ -34,15 +34,15 @@ func _ready():
 	saveUsrGameData()
 	Log.info(self, "Saved user gamedata " + str(Time.get_ticks_msec() - start))
 	# self.global_position = Vector3(mapSize[1] / 2,0,mapSize[0] / 2)
+	
 	Log.info(self, "Creating world " + str(Time.get_ticks_msec() - start))
+	# load map
 	var world = GameWorld.new(missionParams)
 	if world:
-		add_child(world)
-		world.bakeNavigationmesh(world)
-	# load map
+		get_node("World").add_child(world)
+	
 	# place objects (houses, roads, vegetation etc)
-	# create spawn areas
-	# createSpawnAreas()
+	# bake navigationMesh
 	Log.info(self, "Placing start areas " + str(Time.get_ticks_msec() - start))
 	# create & place units
 	# Unit.unitCreation(missionParams)

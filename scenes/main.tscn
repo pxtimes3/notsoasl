@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://dr4d6e4ggl8po"]
+[gd_scene load_steps=23 format=3 uid="uid://dr4d6e4ggl8po"]
 
 [ext_resource type="Script" path="res://scripts/main.gd" id="1_v1ljn"]
 [ext_resource type="Script" path="res://scripts/3d/FreeLookCamera.gd" id="2_jj0fa"]
@@ -8,7 +8,10 @@
 [ext_resource type="Material" uid="uid://d0ew7chx4whtx" path="res://resources/shaders/blur.x.tres" id="7_74nhu"]
 [ext_resource type="Texture2D" uid="uid://xw46as8lgr1j" path="res://screencapture.png" id="8_iv0hy"]
 [ext_resource type="Material" uid="uid://fch8nvnqfju1" path="res://resources/shaders/vignette.tres" id="9_0l2nj"]
+[ext_resource type="Texture2D" uid="uid://bexjej62dn8nr" path="res://resources/materials/deployment_blue.png" id="10_6ttl7"]
 [ext_resource type="FontFile" uid="uid://cb86ktsh83ekv" path="res://assets/fonts/Pixellari.ttf" id="10_pgf0k"]
+[ext_resource type="Material" uid="uid://cl1rsji66mx1r" path="res://assets/textures/Rock Ground 02/4k/Rock Ground 02.tres" id="11_u8d17"]
+[ext_resource type="PackedScene" uid="uid://f53cayoqsd1v" path="res://resources/missions/basicmission/mapMesh.glb" id="12_r6yai"]
 
 [sub_resource type="SystemFont" id="SystemFont_i6yl5"]
 
@@ -39,6 +42,8 @@ bg_color = Color(0.590925, 0.229463, 0.198394, 1)
 font = ExtResource("10_pgf0k")
 outline_size = 1
 outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_1qpee"]
 
 [node name="main" type="Node3D"]
 script = ExtResource("1_v1ljn")
@@ -119,7 +124,6 @@ text = "unitsInScene:"
 
 [node name="Marker" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.687027, 2.7123, -0.241356)
-visible = false
 transparency = 0.75
 cast_shadow = 0
 mesh = SubResource("CylinderMesh_n25ok")
@@ -246,4 +250,13 @@ label_settings = SubResource("LabelSettings_tnpyh")
 
 [node name="World" type="Node" parent="."]
 
-[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+[node name="Decal" type="Decal" parent="."]
+visible = false
+texture_albedo = ExtResource("10_6ttl7")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(20, 0, 0, 0, 20, 0, 0, 0, 20, 0, 0, 0)
+mesh = SubResource("BoxMesh_1qpee")
+surface_material_override/0 = ExtResource("11_u8d17")
+
+[node name="mapMesh" parent="." instance=ExtResource("12_r6yai")]

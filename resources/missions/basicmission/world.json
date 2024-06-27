@@ -1,0 +1,21 @@
+{
+	"buildings": [					
+		{
+			"model": "farmhouse-small",			
+			"position": [-50,50],		
+			"rotation": [0,72]
+		},
+	],
+	"obstacles": [					
+			
+	],
+	"water": [						
+		
+	],
+	"areas": [						
+		
+	],
+	"roaming": [					
+		
+	]
+}

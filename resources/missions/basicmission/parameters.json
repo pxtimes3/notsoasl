@@ -1,7 +1,9 @@
 {
 	"name": "Basic Mission",
+	"campaign": "",
+	"campaignPath": "",
 	"path": "missions/basicmission",
-	"mesh": "mapMesh.obj",
+	"mesh": "mapMesh.glb",
 	"size": [
 		250,
 		250
@@ -13,6 +15,7 @@
 		"player1",
 		"player2"
 	],
+	"debug": {},
 	"player1": {
 		"usarmyriflecompany": {
 			"definitions": "usarmyriflecompany1944.json",
@@ -96,7 +99,7 @@
 	},
 	"deployment": {
 		"player1": {
-			"zone1": [200, 50, 0, 100],
+			"zone1": [200, 50],
 		},
 		"player2": {
 			"zone1": [200, 50, 0, -100],

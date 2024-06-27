@@ -1,5 +1,3 @@
-# TODO: refactor this
-
 extends Node
 
 var UnitScene: PackedScene
@@ -119,10 +117,6 @@ var soldierCount = 0
 func calculateSpawnPoint(_unit : UnitEntity, player : String) -> Vector3:
 	var _currentPlayer = player
 	var deploymentZone = get_node("/root/main/" + player + "_deploy")
-	
-	# TODO: Refactor this mess!
-	# TODO: Check if unit is outside deployment zone
-	# TODO: Check how this fails for player2
 	
 	var aabb = deploymentZone.get_aabb() # xyz, whd
 	var unitSpawnX = aabb.get_endpoint(1)[0] + 5 + (unitsCreated * 10)
